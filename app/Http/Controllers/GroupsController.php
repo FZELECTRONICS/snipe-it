@@ -55,7 +55,7 @@ class GroupsController extends Controller
         // Show the page
         return view('groups/edit', compact('permissions', 'selectedPermissions', 'groupPermissions'))
             ->with('group', $group)
-            ->with('associated_users', [])
+            ->with('associated_users', collect())
             ->with('unselected_users', $users)
             ->with('all_users_count', $users_count);
     }
