@@ -206,6 +206,6 @@ class ComponentPresenter extends Presenter
      */
     public function viewUrl()
     {
-        return route('accessories.show', $this->id);
+        return route('components.show', $this->id);
     }
 }
