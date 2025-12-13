@@ -71,9 +71,14 @@
                   <label class="col-md-3 control-label" for="locale">{{ trans('general.light_dark') }}</label>
                   <div class="col-md-9">
                       <p class="form-control-static" style="padding-top: 7px;">
-                          <a data-theme-toggle-clear class="btn btn-default btn-sm" href="{{ route('profile') }}">
+                          <a data-theme-toggle-clear class="btn btn-theme btn-sm" href="{{ route('profile') }}">
                               {{ trans('general.system_default') }}
                           </a>
+                      </p>
+
+                      <p class="help-block">
+                          {{ trans('general.system_default_help') }}
+                      </p>
                       </p>
                   </div>
               </div>
@@ -82,7 +87,7 @@
               <div class="form-group">
                   <div class="col-md-9 col-md-offset-3">
                       <label class="form-control">
-                          <input type="checkbox" name="enable_sounds" value="1" {{ old('enable_sounds', $user->enable_sounds) ? 'checked' : '' }}>
+                          <input type="checkbox" id="enable_sounds" name="enable_sounds" value="1" {{ old('enable_sounds', $user->enable_sounds) ? 'checked' : '' }}>
                           {{ trans('account/general.enable_sounds') }}
                       </label>
                   </div>
@@ -91,7 +96,7 @@
               <div class="form-group">
                   <div class="col-md-9 col-md-offset-3">
                       <label class="form-control">
-                          <input type="checkbox" name="enable_confetti" value="1" {{ old('enable_confetti', $user->enable_confetti) ? 'checked' : '' }}>
+                          <input type="checkbox" name="enable_confetti" id="enable_confetti" value="1" {{ old('enable_confetti', $user->enable_confetti) ? 'checked' : '' }}>
                           {{ trans('account/general.enable_confetti') }}
                       </label>
                   </div>
@@ -262,6 +267,47 @@
              */
             clearButton.addEventListener("click", (event) => {
                 localStorage.removeItem("theme");
+            });
+
+            $('#enable_sounds').on("click",function () {
+                if ($('#enable_sounds').is(":checked")) {
+                    var audio = new Audio('{{ config('app.url') }}/sounds/success.mp3');
+                    audio.play();
+                }
+
+            });
+
+            $('#enable_confetti').on("click",function () {
+                if ($('#enable_confetti').is(":checked")) {
+                    var duration = 1500;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = {startVelocity: 30, spread: 360, ticks: 60, zIndex: 0};
+
+                    function randomInRange(min, max) {
+                        return Math.random() * (max - min) + min;
+                    }
+
+                    var interval = setInterval(function () {
+                        var timeLeft = animationEnd - Date.now();
+
+                        if (timeLeft <= 0) {
+                            return clearInterval(interval);
+                        }
+
+                        var particleCount = 50 * (timeLeft / duration);
+                        // since particles fall down, start a bit higher than random
+                        confetti({
+                            ...defaults,
+                            particleCount,
+                            origin: {x: randomInRange(0.1, 0.3), y: Math.random() - 0.2}
+                        });
+                        confetti({
+                            ...defaults,
+                            particleCount,
+                            origin: {x: randomInRange(0.7, 0.9), y: Math.random() - 0.2}
+                        });
+                    }, 250);
+                }
             });
 
 
