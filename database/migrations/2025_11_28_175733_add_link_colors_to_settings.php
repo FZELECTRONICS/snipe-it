@@ -97,11 +97,7 @@ return new class extends Migration
                 'link_dark_color' => $link_dark_color,
                 'nav_link_color' => $nav_color,
                 'header_color' => $header_color]);
-
-            DB::table('users')->whereNull('skin')->update([
-                'link_light_color' => $link_light_color,
-                'link_dark_color' => $link_dark_color,
-                'nav_link_color' => $nav_color]);
+            
         }
 
     }
