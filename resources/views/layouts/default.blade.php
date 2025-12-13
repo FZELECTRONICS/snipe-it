@@ -50,9 +50,9 @@
             --main-footer-bg-color: light-dark(#ffffff,#3d4144);
             --main-footer-text-color: light-dark(#605e5e, #d2d6de);
             --main-footer-top-border-color: light-dark(#d2d6de,#605e5e);
-            --main-theme-color: {{ $snipeSettings->header_color ?? '#5fa4cc' }};
-            --nav-hover-text-color: {{ $nav_link_color ?? 'light-dark(hsl(from var(--main-theme-color) h s calc(l - 10)),hsl(from var(--main-theme-color) h s calc(l - 10)))' }};
-            --nav-primary-text-color: {{ $nav_link_color ?? 'light-dark(hsl(from var(--main-theme-color) h s calc(l - 10)),hsl(from var(--main-theme-color) h s calc(l - 10)))' }};
+            --main-theme-color: {{ $snipeSettings->header_color ?? '#3c8dbc' }};
+            --nav-hover-text-color: {{ $nav_link_color ?? 'hsl(from var(--main-theme-color) h s calc(l - 10))' }};
+            --nav-primary-text-color: {{ $nav_link_color ?? '#ffffff' }};
             --search-highlight: #e9d15b;
             --sidenav-hover-color-bg: #4c4b4b;
             --sidenav-text-hover-color: #fff;
@@ -63,7 +63,7 @@
             --table-stripe-bg-alt: light-dark(rgba(211, 211, 211, 0.25), #323131);
             --table-stripe-bg: light-dark(#ffffff, #494747);
             --text-danger: light-dark(#a94442, #fa5b48);
-            --text-help: light-dark(#605e5e,#a6a4a4);
+            --text-help: light-dark(#777676,#a6a4a4);
             --text-info: light-dark(#31708f,#2baae6);
             --text-success: light-dark(#039516,#4ced61);
             --text-warning: light-dark(#da9113,#f3a51f);
@@ -672,7 +672,7 @@
 
 
         .help-block {
-            color: var(--text-help);
+            color: var(--text-help) !important;
         }
 
         .alert-msg,
