@@ -72,6 +72,7 @@ class LogListener
         $logaction->note = $event->acceptance->note;
         $logaction->action_type = 'accepted';
         $logaction->action_date = $event->acceptance->accepted_at;
+        $logaction->qty = $event->acceptance->qty ?? 1;
 
         // TODO: log the actual license seat that was checked out
         if ($event->acceptance->checkoutable instanceof LicenseSeat) {
@@ -90,6 +91,7 @@ class LogListener
         $logaction->note = $event->acceptance->note;
         $logaction->action_type = 'declined';
         $logaction->action_date = $event->acceptance->declined_at;
+        $logaction->qty = $event->acceptance->qty ?? 1;
 
         // TODO: log the actual license seat that was checked out
         if ($event->acceptance->checkoutable instanceof LicenseSeat) {
