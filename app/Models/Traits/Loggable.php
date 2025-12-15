@@ -40,7 +40,7 @@ trait Loggable
      * @since  [v3.4]
      * @return \App\Models\Actionlog
      */
-    public function logCheckout($note, $target, $action_date = null, $originalValues = [], $qty)
+    public function logCheckout($note, $target, $action_date = null, $originalValues = [], $qty = 1)
     {
 
         $log = new Actionlog;

@@ -115,7 +115,14 @@ class ComponentCheckoutController extends Controller
             'note' => $request->input('note'),
         ]);
 
-        event(new CheckoutableCheckedOut($component, $asset, auth()->user(), $request->input('note')));
+        event(new CheckoutableCheckedOut(
+            $component,
+            $asset,
+            auth()->user(),
+            $request->input('note'),
+            [],
+            $component->checkout_qty,
+        ));
 
         $request->request->add(['checkout_to_type' => 'asset']);
         $request->request->add(['assigned_asset' => $asset->id]);

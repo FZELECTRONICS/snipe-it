@@ -321,7 +321,7 @@ class ComponentsController extends Controller
                 'note' => $request->input('note'),
             ]);
 
-            $component->logCheckout($request->input('note'), $asset);
+            $component->logCheckout($request->input('note'), $asset, null, [], $request->get('assigned_qty', 1));
 
             return response()->json(Helper::formatStandardApiResponse('success', null,  trans('admin/components/message.checkout.success')));
         }

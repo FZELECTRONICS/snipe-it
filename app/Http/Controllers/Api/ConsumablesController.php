@@ -326,8 +326,14 @@ class ConsumablesController extends Controller
             );
         }
 
-
-        event(new CheckoutableCheckedOut($consumable, $user, auth()->user(), $request->input('note')));
+        event(new CheckoutableCheckedOut(
+            $consumable,
+            $user,
+            auth()->user(),
+            $request->input('note'),
+            [],
+            $consumable->checkout_qty,
+        ));
 
         return response()->json(Helper::formatStandardApiResponse('success', null, trans('admin/consumables/message.checkout.success')));
 
