@@ -80,7 +80,7 @@ class ActionlogsTransformer
 
                     // this is a custom field
                     if (str_starts_with($fieldname, '_snipeit_')) {
-                        
+
                         foreach ($custom_fields as $custom_field) {
 
                             if ($custom_field->db_column == $fieldname) {
@@ -185,7 +185,7 @@ class ActionlogsTransformer
                 'name' => e($actionlog->target->display_name) ?? null,
                 'type' => e($actionlog->targetType()),
             ] : null,
-
+            'qty' => $this->getQuantity($actionlog),
             'note'          => ($actionlog->note) ? Helper::parseEscapedMarkedownInline($actionlog->note): null,
             'signature_file'   => ($actionlog->accept_signature) ? route('log.signature.view', ['filename' => $actionlog->accept_signature ]) : null,
             'log_meta'          => ((isset($clean_meta)) && (is_array($clean_meta))) ? $clean_meta: null,
@@ -336,6 +336,19 @@ class ActionlogsTransformer
 
     }
 
+    private function getQuantity(Actionlog $actionlog): ?int
+    {
+        if (!$actionlog->qty) {
+            return null;
+        }
+
+        // only a few action types will have a quantity we are interested in.
+        if (!in_array($actionlog->action_type, ['checkout', 'accepted', 'declined', 'checkin from'])) {
+            return null;
+        }
+
+        return (int) $actionlog->qty;
+    }
 
 
 }
