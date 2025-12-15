@@ -40,7 +40,7 @@ trait Loggable
      * @since  [v3.4]
      * @return \App\Models\Actionlog
      */
-    public function logCheckout($note, $target, $action_date = null, $originalValues = [])
+    public function logCheckout($note, $target, $action_date = null, $originalValues = [], $qty)
     {
 
         $log = new Actionlog;
@@ -94,7 +94,7 @@ trait Loggable
 
         $log->note = $note;
         $log->action_date = $action_date;
-
+        $log->qty = $qty;
 
         $changed = [];
         $array_to_flip = array_keys($fields_array);

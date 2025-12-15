@@ -325,7 +325,14 @@ class AccessoriesController extends Controller
         }
 
         // Set this value to be able to pass the qty through to the event
-        event(new CheckoutableCheckedOut($accessory, $target, auth()->user(), $request->input('note')));
+        event(new CheckoutableCheckedOut(
+            $accessory,
+            $target,
+            auth()->user(),
+            $request->input('note'),
+            [],
+            $accessory->checkout_qty,
+        ));
 
         return response()->json(Helper::formatStandardApiResponse('success', $payload, trans('admin/accessories/message.checkout.success')));
 
