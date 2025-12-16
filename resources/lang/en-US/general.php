@@ -163,6 +163,7 @@ return [
     'image_filetypes_help'  => 'Accepted Filetypes are jpg, webp, png, gif, svg, and avif. The maximum upload size allowed is :size.',
     'unaccepted_image_type'  => 'This image file was not readable. Accepted filetypes are jpg, webp, png, gif, and svg. The mimetype of this file is: :mimetype.',
     'import'         	    => 'Import',
+    'documentation'         => 'Open documentation in a new link',
     'import_this_file'      => 'Map fields and process this file',
     'importing'         	=> 'Importing',
     'importing_help'        => 'The CSV should be comma-delimited and formatted with headers that match the ones in the <a href="https://snipe-it.readme.io/docs/importing" target="_new">sample CSVs in the documentation <i class="fa fa-external-link"></i></a>.',

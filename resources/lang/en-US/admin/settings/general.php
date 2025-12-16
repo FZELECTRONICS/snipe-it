@@ -78,6 +78,8 @@ return [
     'footer_text_help'          => 'This text will appear in the right-side footer. Links are allowed using <a href="https://help.github.com/articles/github-flavored-markdown/">Github flavored markdown</a>. Line breaks, headers, images, etc may result in unpredictable results.',
     'footer_text_placeholder'   => 'Optional footer text',
     'general_settings'			=> 'General Settings',
+    'api_url'			        => 'API Base URL',
+    'scim_url'			        => 'SCIM Base URL',
     'general_settings_help'     => 'Default EULA and more',
     'generate_backup'			=> 'Generate Backup',
     'google_workspaces'         => 'Google Workspaces',
