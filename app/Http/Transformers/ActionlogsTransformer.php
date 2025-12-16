@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Transformers;
 
+use App\Enums\ActionType;
 use App\Helpers\Helper;
 use App\Helpers\StorageHelper;
 use App\Models\Actionlog;
@@ -343,7 +344,14 @@ class ActionlogsTransformer
         }
 
         // only a few action types will have a quantity we are interested in.
-        if (!in_array($actionlog->action_type, ['checkout', 'accepted', 'declined', 'checkin from', 'add seats', 'delete seats'])) {
+        if (!in_array($actionlog->action_type, [
+            ActionType::Checkout->value,
+            ActionType::Accepted->value,
+            ActionType::Declined->value,
+            ActionType::CheckinFrom->value,
+            ActionType::AddSeats->value,
+            ActionType::DeleteSeats->value,
+        ])) {
             return null;
         }
 
