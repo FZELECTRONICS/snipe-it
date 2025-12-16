@@ -343,7 +343,7 @@ class ActionlogsTransformer
         }
 
         // only a few action types will have a quantity we are interested in.
-        if (!in_array($actionlog->action_type, ['checkout', 'accepted', 'declined', 'checkin from'])) {
+        if (!in_array($actionlog->action_type, ['checkout', 'accepted', 'declined', 'checkin from', 'add seats', 'delete seats'])) {
             return null;
         }
 
