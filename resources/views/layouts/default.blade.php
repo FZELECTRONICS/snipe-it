@@ -497,11 +497,13 @@
         .dropdown-menu > li,
         .navbar,
         .navbar-nav,
-        .label-default
+        .label-default,
+        .label-default:hover
         {
             background-color: var(--main-theme-color);
             color: var(--nav-primary-text-color) !important;
         }
+
 
         .dropdown-menu > li > a:link,
         .dropdown-menu > li > a:visited,
