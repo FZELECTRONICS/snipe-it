@@ -223,7 +223,7 @@ class License extends Depreciable
             $logAction->created_by = auth()->id() ?: 1; // We don't have an id while running the importer from CLI.
             $logAction->note = "deleted {$change} seats";
             $logAction->target_id = null;
-            $logAction->qty = $change;
+            $logAction->quantity = $change;
             $logAction->logaction('delete seats');
 
             return true;
@@ -260,7 +260,7 @@ class License extends Depreciable
             $logAction->created_by = auth()->id() ?: 1; // Importer.
             $logAction->note = "added {$change} seats";
             $logAction->target_id = null;
-            $logAction->qty = $change;
+            $logAction->quantity = $change;
             $logAction->logaction('add seats');
         }
 

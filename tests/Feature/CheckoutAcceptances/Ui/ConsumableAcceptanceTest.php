@@ -38,7 +38,7 @@ class ConsumableAcceptanceTest extends TestCase
             'target_type' => User::class,
             'item_id' => $consumable->id,
             'item_type' => Consumable::class,
-            'qty' => 2,
+            'quantity' => 2,
         ]);
     }
 
@@ -71,7 +71,7 @@ class ConsumableAcceptanceTest extends TestCase
             'target_type' => User::class,
             'item_id' => $consumable->id,
             'item_type' => Consumable::class,
-            'qty' => 2,
+            'quantity' => 2,
         ]);
     }
 }

@@ -119,7 +119,7 @@ class ComponentsCheckoutTest extends TestCase
             'target_type' => Asset::class,
             'item_id' => $component->id,
             'item_type' => Component::class,
-            'qty' => 2,
+            'quantity' => 2,
             'created_by' => $admin->id,
         ]);
     }

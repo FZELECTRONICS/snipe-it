@@ -25,7 +25,7 @@ class LicenseTest extends TestCase
             'item_id' => $license->id,
             'deleted_at' => null,
             // relevant for this test:
-            'qty' => 4,
+            'quantity' => 4,
             'note' => 'added 4 seats',
         ]);
     }
@@ -46,7 +46,7 @@ class LicenseTest extends TestCase
             'item_id' => $license->id,
             'deleted_at' => null,
             // relevant for this test:
-            'qty' => 3,
+            'quantity' => 3,
             'note' => 'deleted 3 seats',
         ]);
     }

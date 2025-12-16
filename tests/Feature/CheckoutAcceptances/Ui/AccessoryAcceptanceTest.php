@@ -43,7 +43,7 @@ class AccessoryAcceptanceTest extends TestCase
             'target_type' => User::class,
             'item_id' => $accessory->id,
             'item_type' => Accessory::class,
-            'qty' => 2,
+            'quantity' => 2,
         ]);
     }
 
@@ -76,7 +76,7 @@ class AccessoryAcceptanceTest extends TestCase
             'target_type' => User::class,
             'item_id' => $accessory->id,
             'item_type' => Accessory::class,
-            'qty' => 2,
+            'quantity' => 2,
         ]);
     }
 

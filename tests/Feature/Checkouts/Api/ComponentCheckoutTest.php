@@ -120,7 +120,7 @@ class ComponentCheckoutTest extends TestCase implements TestsFullMultipleCompani
             'location_id' => $location->id,
             'item_type' => Component::class,
             'item_id' => $component->id,
-            'qty' => 2,
+            'quantity' => 2,
         ]);
     }
 

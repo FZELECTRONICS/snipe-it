@@ -118,7 +118,7 @@ class HistoryPresenter extends Presenter
                 'formatter' => 'fileDownloadButtonsFormatter',
             ],
             [
-                'field' => 'qty',
+                'field' => 'quantity',
                 'searchable' => false,
                 'sortable' => true,
                 'visible' => true,

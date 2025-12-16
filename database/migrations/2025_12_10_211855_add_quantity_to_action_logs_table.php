@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('action_logs', function (Blueprint $table) {
-            $table->integer('qty')->default(1)->after('expected_checkin');
+            $table->integer('quantity')->default(1)->after('expected_checkin');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('action_logs', function (Blueprint $table) {
-            $table->dropColumn('qty');
+            $table->dropColumn('quantity');
         });
     }
 };

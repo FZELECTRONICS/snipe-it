@@ -121,7 +121,7 @@ class AccessoryCheckoutTest extends TestCase implements TestsPermissionsRequirem
             'target_type' => User::class,
             'item_id' => $accessory->id,
             'item_type' => Accessory::class,
-            'qty' => 2,
+            'quantity' => 2,
             'created_by' => $admin->id,
         ]);
 

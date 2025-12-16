@@ -69,7 +69,7 @@ class ConsumableCheckoutTest extends TestCase
             'target_type' => User::class,
             'target_id' => $user->id,
             'action_type' => 'checkout',
-            'qty' => 2,
+            'quantity' => 2,
         ]);
     }
 

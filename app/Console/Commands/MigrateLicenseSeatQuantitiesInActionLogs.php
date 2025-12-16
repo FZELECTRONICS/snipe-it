@@ -35,7 +35,7 @@ class MigrateLicenseSeatQuantitiesInActionLogs extends Command
                 ActionType::AddSeats->value,
                 ActionType::DeleteSeats->value,
             ])
-            ->where('qty', '=', 1)
+            ->where('quantity', '=', 1)
             ->orderBy('id');
 
         $count = $query->count();
@@ -57,13 +57,13 @@ class MigrateLicenseSeatQuantitiesInActionLogs extends Command
                         $this->error('Could not parse quantity from ID: {id}', ['id' => $log->id]);
                     }
 
-                    if ($log->qty !== (int) $quantityFromNote) {
+                    if ($log->quantity !== (int) $quantityFromNote) {
                         $this->info(vsprintf('Updating id: %s to quantity %s', [
                             'id' => $log->id,
                             'new_quantity' => $quantityFromNote,
                         ]));
 
-                        DB::table('action_logs')->where('id', $log->id)->update(['qty' => (int) $quantityFromNote]);
+                        DB::table('action_logs')->where('id', $log->id)->update(['quantity' => (int) $quantityFromNote]);
                     }
                 });
             });

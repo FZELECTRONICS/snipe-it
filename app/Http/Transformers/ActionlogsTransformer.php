@@ -185,7 +185,7 @@ class ActionlogsTransformer
                 'name' => e($actionlog->target->display_name) ?? null,
                 'type' => e($actionlog->targetType()),
             ] : null,
-            'qty' => $this->getQuantity($actionlog),
+            'quantity' => $this->getQuantity($actionlog),
             'note'          => ($actionlog->note) ? Helper::parseEscapedMarkedownInline($actionlog->note): null,
             'signature_file'   => ($actionlog->accept_signature) ? route('log.signature.view', ['filename' => $actionlog->accept_signature ]) : null,
             'log_meta'          => ((isset($clean_meta)) && (is_array($clean_meta))) ? $clean_meta: null,
@@ -338,7 +338,7 @@ class ActionlogsTransformer
 
     private function getQuantity(Actionlog $actionlog): ?int
     {
-        if (!$actionlog->qty) {
+        if (!$actionlog->quantity) {
             return null;
         }
 
@@ -347,7 +347,7 @@ class ActionlogsTransformer
             return null;
         }
 
-        return (int) $actionlog->qty;
+        return (int) $actionlog->quantity;
     }
 
 

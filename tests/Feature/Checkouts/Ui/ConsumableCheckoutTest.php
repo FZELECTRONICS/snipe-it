@@ -171,7 +171,7 @@ class ConsumableCheckoutTest extends TestCase
             'target_type' => User::class,
             'item_id' => $consumable->id,
             'item_type' => Consumable::class,
-            'qty' => 2,
+            'quantity' => 2,
             'created_by' => $admin->id,
         ]);
     }
