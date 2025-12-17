@@ -351,10 +351,13 @@ class UsersController extends Controller
         if ($user = User::find($id)) {
 
             $this->authorize('delete', $user);
+            if (auth()->user()->can('canEditAuthFields', $user) && auth()->user()->can('editableOnDemo')) {
 
-            if ($user->delete()) {
-                return redirect()->route('users.index')->with('success', trans('admin/users/message.success.delete'));
+                if ($user->delete()) {
+                    return redirect()->route('users.index')->with('success', trans('admin/users/message.success.delete'));
+                }
             }
+            return redirect()->route('users.index')->with('error', trans('admin/users/message.cannot_delete'));
         }
         return redirect()->route('users.index')->with('error', trans('admin/users/message.user_not_found'));
 

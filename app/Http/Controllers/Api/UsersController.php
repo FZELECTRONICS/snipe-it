@@ -632,21 +632,26 @@ class UsersController extends Controller
 
             $this->authorize('delete', $user);
 
-            if ($user->delete()) {
+            if (auth()->user()->can('canEditAuthFields', $user) && auth()->user()->can('editableOnDemo')) {
+                if ($user->delete()) {
 
-                // Remove the user's avatar if they have one
-                if (Storage::disk('public')->exists('avatars/' . $user->avatar)) {
-                    try {
-                        Storage::disk('public')->delete('avatars/' . $user->avatar);
-                    } catch (\Exception $e) {
-                        Log::debug($e);
-                    }
+                    // Remove the user's avatar if they have one
+                    // @todo This should be done on purge, not here
+//                    if (Storage::disk('public')->exists('avatars/' . $user->avatar)) {
+//                        try {
+//                            Storage::disk('public')->delete('avatars/' . $user->avatar);
+//                        } catch (\Exception $e) {
+//                            Log::debug($e);
+//                        }
+//                    }
+
+                    return response()->json(Helper::formatStandardApiResponse('success', null, trans('admin/users/message.success.delete')));
                 }
 
-                return response()->json(Helper::formatStandardApiResponse('success', null, trans('admin/users/message.success.delete')));
+                return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/users/message.error.delete')));
             }
 
-            return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/users/message.error.delete')));
+            return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/users/message.cannot_delete')));
 
         }
 
