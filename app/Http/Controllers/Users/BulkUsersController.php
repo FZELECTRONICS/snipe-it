@@ -312,7 +312,9 @@ class BulkUsersController extends Controller
         foreach ($users as $user) {
             $user->accessories()->sync([]);
             if ($request->input('delete_user')=='1') {
-                $user->delete();
+                if (auth()->user()->can('canEditAuthFields', $user) && auth()->user()->can('editableOnDemo')) {
+                    $user->delete();
+                }
             }
         }
 

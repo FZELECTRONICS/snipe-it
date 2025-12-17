@@ -633,6 +633,7 @@ class UsersController extends Controller
             $this->authorize('delete', $user);
 
             if (auth()->user()->can('canEditAuthFields', $user) && auth()->user()->can('editableOnDemo')) {
+
                 if ($user->delete()) {
 
                     // Remove the user's avatar if they have one
