@@ -9,7 +9,7 @@ class IndexUsersTest extends TestCase
 {
     public function testRequiresPermission()
     {
-        $this->actingAsForApi(User::factory()->create())
+        $this->actingAs(User::factory()->create())
             ->get(route('users.index'))
             ->assertForbidden();
     }
