@@ -130,10 +130,10 @@ class UsersController extends Controller
         // we have to invoke the form request here to handle image uploads
         app(ImageUploadRequest::class)->handleImages($user, 600, 'avatar', 'avatars', 'avatar');
 
-        if ($request->get('redirect_option') === 'back'){
+        if ($request->input('redirect_option') === 'back'){
             session()->put(['redirect_option' => 'index']);
         } else {
-            session()->put(['redirect_option' => $request->get('redirect_option')]);
+            session()->put(['redirect_option' => $request->input('redirect_option')]);
         }
 
 
@@ -325,7 +325,7 @@ class UsersController extends Controller
 
         // Handle uploaded avatar
         app(ImageUploadRequest::class)->handleImages($user, 600, 'avatar', 'avatars', 'avatar');
-        session()->put(['redirect_option' => $request->get('redirect_option')]);
+        session()->put(['redirect_option' => $request->input('redirect_option')]);
 
         if ($user->save()) {
             // Redirect to the user page

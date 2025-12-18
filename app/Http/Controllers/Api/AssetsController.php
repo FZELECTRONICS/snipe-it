@@ -377,7 +377,7 @@ class AssetsController extends Controller
         }
 
         if ($request->filled('order_number')) {
-            $assets->where('assets.order_number', '=', strval($request->get('order_number')));
+            $assets->where('assets.order_number', '=', strval($request->input('order_number')));
         }
 
         // This is kinda gross, but we need to do this because the Bootstrap Tables
@@ -654,7 +654,7 @@ class AssetsController extends Controller
     public function store(StoreAssetRequest $request): JsonResponse
     {
         $asset = new Asset();
-        $asset->model()->associate(AssetModel::find((int) $request->get('model_id')));
+        $asset->model()->associate(AssetModel::find((int) $request->input('model_id')));
 
         $asset->fill($request->validated());
         $asset->created_by    = auth()->id();
@@ -683,8 +683,8 @@ class AssetsController extends Controller
                 // If input value is null, use custom field's default value
                 if ($field_val == null) {
                     Log::debug('Field value for ' . $field->db_column . ' is null');
-                    $field_val = $field->defaultValue($request->get('model_id'));
-                    Log::debug('Use the default fieldset value of ' . $field->defaultValue($request->get('model_id')));
+                    $field_val = $field->defaultValue($request->input('model_id'));
+                    Log::debug('Use the default fieldset value of ' . $field->defaultValue($request->input('model_id')));
                 }
 
                 // if the field is set to encrypted, make sure we encrypt the value
@@ -695,7 +695,7 @@ class AssetsController extends Controller
 
                         // If input value is null, use custom field's default value
                         if (($field_val == null) && ($request->has('model_id') != '')) {
-                            $field_val = Crypt::encrypt($field->defaultValue($request->get('model_id')));
+                            $field_val = Crypt::encrypt($field->defaultValue($request->input('model_id')));
                         } else {
                             $field_val = Crypt::encrypt($request->input($field->db_column));
                         }
@@ -713,15 +713,15 @@ class AssetsController extends Controller
         }
 
         if ($asset->save()) {
-            if ($request->get('assigned_user')) {
+            if ($request->input('assigned_user')) {
                 $target = User::find(request('assigned_user'));
-            } elseif ($request->get('assigned_asset')) {
+            } elseif ($request->input('assigned_asset')) {
                 $target = Asset::find(request('assigned_asset'));
-            } elseif ($request->get('assigned_location')) {
+            } elseif ($request->input('assigned_location')) {
                 $target = Location::find(request('assigned_location'));
             }
             if (isset($target)) {
-                $asset->checkOut($target, auth()->user(), date('Y-m-d H:i:s'), '', 'Checked out on asset creation', e($request->get('name')));
+                $asset->checkOut($target, auth()->user(), date('Y-m-d H:i:s'), '', 'Checked out on asset creation', e($request->input('name')));
             }
 
             if ($asset->image) {
@@ -798,19 +798,19 @@ class AssetsController extends Controller
             }
         }
         if ($asset->save()) {
-            if (($request->filled('assigned_user')) && ($target = User::find($request->get('assigned_user')))) {
+            if (($request->filled('assigned_user')) && ($target = User::find($request->input('assigned_user')))) {
                 $location = $target->location_id;
-            } elseif (($request->filled('assigned_asset')) && ($target = Asset::find($request->get('assigned_asset')))) {
+            } elseif (($request->filled('assigned_asset')) && ($target = Asset::find($request->input('assigned_asset')))) {
                 $location = $target->location_id;
 
                 Asset::where('assigned_type', \App\Models\Asset::class)->where('assigned_to', $asset->id)
                     ->update(['location_id' => $target->location_id]);
-            } elseif (($request->filled('assigned_location')) && ($target = Location::find($request->get('assigned_location')))) {
+            } elseif (($request->filled('assigned_location')) && ($target = Location::find($request->input('assigned_location')))) {
                 $location = $target->id;
             }
 
             if (isset($target)) {
-                $asset->checkOut($target, auth()->user(), date('Y-m-d H:i:s'), '', 'Checked out on asset update', e($request->get('name')), $location);
+                $asset->checkOut($target, auth()->user(), date('Y-m-d H:i:s'), '', 'Checked out on asset update', e($request->input('name')), $location);
             }
 
             if ($asset->image) {
@@ -954,7 +954,7 @@ class AssetsController extends Controller
         }
 
         if ($request->filled('status_id')) {
-            $asset->status_id = $request->get('status_id');
+            $asset->status_id = $request->input('status_id');
         }
 
         if (! isset($target)) {
@@ -1034,7 +1034,7 @@ class AssetsController extends Controller
         $checkin_at = $request->filled('checkin_at') ? $request->input('checkin_at') . ' ' . date('H:i:s') : date('Y-m-d H:i:s');
         $originalValues = $asset->getRawOriginal();
 
-        if (($request->filled('checkin_at')) && ($request->get('checkin_at') != date('Y-m-d'))) {
+        if (($request->filled('checkin_at')) && ($request->input('checkin_at') != date('Y-m-d'))) {
             $originalValues['action_date'] = $checkin_at;
         }
 
@@ -1143,7 +1143,7 @@ class AssetsController extends Controller
             /**
              * Update custom fields in the database.
              * Validation for these fields is handled through the AssetRequest form request
-             * $model = AssetModel::find($request->get('model_id'));
+             * $model = AssetModel::find($request->input('model_id'));
             */
             if (($asset->model) && ($asset->model->fieldset)) {
                 $payload['custom_fields'] = [];

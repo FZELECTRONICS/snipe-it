@@ -588,7 +588,7 @@ class BulkAssetsController extends Controller
         if ($request->session()->has('bulk_back_url')) {
             $bulk_back_url = $request->session()->pull('bulk_back_url');
         }
-        $assetIds = $request->get('ids');
+        $assetIds = $request->input('ids');
 
         if(empty($assetIds)) {
             return redirect($bulk_back_url)->with('error', trans('admin/hardware/message.delete.nothing_updated'));
@@ -652,11 +652,11 @@ class BulkAssetsController extends Controller
             $target = $this->determineCheckoutTarget();
             session()->put(['checkout_to_type' => $target]);
 
-            if (! is_array($request->get('selected_assets'))) {
+            if (! is_array($request->input('selected_assets'))) {
                 return redirect()->route('hardware.bulkcheckout.show')->withInput()->with('error', trans('admin/hardware/message.checkout.no_assets_selected'));
             }
 
-            $asset_ids = array_filter($request->get('selected_assets'));
+            $asset_ids = array_filter($request->input('selected_assets'));
 
             $assets = Asset::findOrFail($asset_ids);
 
@@ -692,14 +692,14 @@ class BulkAssetsController extends Controller
                 }
             }
             $checkout_at = date('Y-m-d H:i:s');
-            if (($request->filled('checkout_at')) && ($request->get('checkout_at') != date('Y-m-d'))) {
-                $checkout_at = $request->get('checkout_at');
+            if (($request->filled('checkout_at')) && ($request->input('checkout_at') != date('Y-m-d'))) {
+                $checkout_at = $request->input('checkout_at');
             }
 
             $expected_checkin = '';
 
             if ($request->filled('expected_checkin')) {
-                $expected_checkin = $request->get('expected_checkin');
+                $expected_checkin = $request->input('expected_checkin');
             }
 
             $errors = [];
@@ -709,10 +709,10 @@ class BulkAssetsController extends Controller
 
                     // See if there is a status label passed
                     if ($request->filled('status_id')) {
-                        $asset->status_id = $request->get('status_id');
+                        $asset->status_id = $request->input('status_id');
                     }
 
-                    $checkout_success = $asset->checkOut($target, $admin, $checkout_at, $expected_checkin, e($request->get('note')), $asset->name, null);
+                    $checkout_success = $asset->checkOut($target, $admin, $checkout_at, $expected_checkin, e($request->input('note')), $asset->name, null);
 
                     //TODO - I think this logic is duplicated in the checkOut method?
                     if ($target->location_id != '') {
@@ -743,7 +743,7 @@ class BulkAssetsController extends Controller
     public function restore(Request $request) : RedirectResponse
     {
         $this->authorize('update', Asset::class);
-        $assetIds = $request->get('ids');
+        $assetIds = $request->input('ids');
 
         if (empty($assetIds)) {
             return redirect()->route('hardware.index')->with('error', trans('admin/hardware/message.restore.nothing_updated'));

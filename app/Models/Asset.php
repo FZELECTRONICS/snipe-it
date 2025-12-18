@@ -570,7 +570,7 @@ class Asset extends Depreciable
                             if (is_array(request()->input($field->db_column))) {
                                 $this->{$field->db_column} = Crypt::encrypt(implode(', ', request()->input($field->db_column)));
                             } else {
-                                $this->{$field->db_column} = Crypt::encrypt(request()->get($field->db_column));
+                                $this->{$field->db_column} = Crypt::encrypt(request()->input($field->db_column));
                             }
                         }
 

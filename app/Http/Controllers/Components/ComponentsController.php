@@ -88,10 +88,10 @@ class ComponentsController extends Controller
 
         $component = $request->handleImages($component);
 
-        if($request->get('redirect_option') === 'back'){
+        if($request->input('redirect_option') === 'back'){
             session()->put(['redirect_option' => 'index']);
         } else {
-            session()->put(['redirect_option' => $request->get('redirect_option')]);
+            session()->put(['redirect_option' => $request->input('redirect_option')]);
         }
 
 
@@ -168,7 +168,7 @@ class ComponentsController extends Controller
 
         $component = $request->handleImages($component);
 
-        session()->put(['redirect_option' => $request->get('redirect_option')]);
+        session()->put(['redirect_option' => $request->input('redirect_option')]);
 
         if ($component->save()) {
             return Helper::getRedirectOption($request, $component->id, 'Components')

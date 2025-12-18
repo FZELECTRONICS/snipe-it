@@ -389,7 +389,7 @@ class AccessoriesController extends Controller
         ]);
 
         if ($request->filled('search')) {
-            $accessories = $accessories->where('accessories.name', 'LIKE', '%'.$request->get('search').'%');
+            $accessories = $accessories->where('accessories.name', 'LIKE', '%'.$request->input('search').'%');
         }
 
         $accessories = $accessories->orderBy('name', 'ASC')->paginate(50);

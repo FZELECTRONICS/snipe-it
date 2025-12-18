@@ -94,7 +94,7 @@ class AccessoryCheckoutController extends Controller
         $request->request->add(['checkout_to_type' => request('checkout_to_type')]);
         $request->request->add(['assigned_to' => $target->id]);
 
-        session()->put(['redirect_option' => $request->get('redirect_option'), 'checkout_to_type' => $request->get('checkout_to_type')]);
+        session()->put(['redirect_option' => $request->input('redirect_option'), 'checkout_to_type' => $request->input('checkout_to_type')]);
 
 
         // Redirect to the new accessory page

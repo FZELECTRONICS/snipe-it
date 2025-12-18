@@ -265,7 +265,7 @@ class LicensesController extends Controller
         ]);
 
         if ($request->filled('search')) {
-            $licenses = $licenses->where('licenses.name', 'LIKE', '%'.$request->get('search').'%');
+            $licenses = $licenses->where('licenses.name', 'LIKE', '%'.$request->input('search').'%');
         }
 
         $licenses = $licenses->orderBy('name', 'ASC')->paginate(50);

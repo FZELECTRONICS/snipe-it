@@ -346,7 +346,7 @@ class ConsumablesController extends Controller
         ]);
 
         if ($request->filled('search')) {
-            $consumables = $consumables->where('consumables.name', 'LIKE', '%'.$request->get('search').'%');
+            $consumables = $consumables->where('consumables.name', 'LIKE', '%'.$request->input('search').'%');
         }
 
         $consumables = $consumables->orderBy('name', 'ASC')->paginate(50);

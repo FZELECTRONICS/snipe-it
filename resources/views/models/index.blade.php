@@ -3,7 +3,7 @@
 {{-- Page title --}}
 @section('title')
 
-  @if (Request::get('status')=='deleted')
+  @if (request()->input('status')=='deleted')
     {{ trans('admin/models/general.view_deleted') }}
     {{ trans('admin/models/table.title') }}
     @else

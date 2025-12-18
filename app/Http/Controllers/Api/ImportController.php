@@ -196,7 +196,7 @@ class ImportController extends Controller
         $this->authorize('import');
 
         // Run a backup immediately before processing
-        if ($request->get('run-backup')) {
+        if ($request->input('run-backup')) {
             Log::debug('Backup manually requested via importer');
             Artisan::call('snipeit:backup', ['--filename' => 'pre-import-backup-'.date('Y-m-d-H-i-s')]);
         } else {
@@ -212,7 +212,7 @@ class ImportController extends Controller
 
         $errors = $request->import($import);
         $redirectTo = 'hardware.index';
-        switch ($request->get('import-type')) {
+        switch ($request->input('import-type')) {
             case 'asset':
                 $model_perms = 'App\Models\Asset';
                 $redirectTo = 'hardware.index';

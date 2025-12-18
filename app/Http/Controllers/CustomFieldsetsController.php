@@ -91,7 +91,7 @@ class CustomFieldsetsController extends Controller
         $this->authorize('create', CustomField::class);
 
         $fieldset = new CustomFieldset([
-                'name' => $request->get('name'),
+                'name' => $request->input('name'),
                 'created_by' => auth()->id(),
         ]);
 
