@@ -791,7 +791,8 @@
         .datepicker.dropdown-menu td:hover,
         .datepicker.datepicker-inline td:hover,
         .datepicker table tr td span:hover,
-        .datepicker table tr td span.focused
+        .datepicker table tr td span.focused,
+        .logo:hover
         {
             background-color: var(--main-theme-color) !important;
             color: var(--nav-primary-text-color) !important;
