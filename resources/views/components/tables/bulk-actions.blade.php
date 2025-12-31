@@ -18,7 +18,7 @@
         @csrf
 
         {{--        The sort and order will only be used if the cookie is actually empty (like on first-use)--}}
-        <input name="sort" type="hidden" value="{{`$model_name.id`}}">
+        <input name="sort" type="hidden" value="{{ "{$model_name}.id" }}">
         <input name="order" type="hidden" value="asc">
         <label for="bulk_actions">
             <span class="sr-only">
