@@ -297,13 +297,13 @@ trait Loggable
 
             } catch (ConnectException $e) {
                 Log::warning('Teams webhook connection failed', [
-                    'endpoint' => Setting::getSettings()->webhook_endpoint,
+                    'endpoint' => $endpoint,
                     'error' => $e->getMessage(),
                 ]);
 
             } catch (Throwable $e) {
                 Log::error('Teams webhook failed unexpectedly', [
-                    'endpoint' => Setting::getSettings()->webhook_endpoint,
+                    'endpoint' => $endpoint,
                     'exception' => get_class($e),
                     'error' => $e->getMessage(),
                 ]);
