@@ -15,7 +15,7 @@ class Depreciation extends SnipeModel
     use Presentable;
     // Declare the rules for the form validation
     protected $rules = [
-        'name' => 'required|min:3|max:255|unique:depreciations,name',
+        'name' => 'required|max:255|unique:depreciations,name',
         'months' => 'required|max:3600|integer',
     ];
 

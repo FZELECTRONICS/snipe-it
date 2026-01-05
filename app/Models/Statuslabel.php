@@ -21,7 +21,7 @@ class Statuslabel extends SnipeModel
     protected $hidden = ['user_id', 'deleted_at'];
 
     protected $rules = [
-        'name'  => 'required|string|unique_undeleted',
+        'name'  => 'required|max:255|string|unique_undeleted',
         'notes'   => 'string|nullable',
         'deployable' => 'required',
         'pending' => 'required',
