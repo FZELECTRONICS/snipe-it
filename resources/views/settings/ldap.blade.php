@@ -902,7 +902,7 @@
                                                 <input type="password" name="ldaptest_password" id="ldaptest_password" class="form-control" placeholder="{{trans('admin/settings/general.ldap_password_placeholder')}}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
                                             </div>
                                             <div class="col-md-3">
-                                                <a class="btn btn-default btn-sm" id="ldaptestlogin" style="margin-right: 10px;">{{ trans('admin/settings/general.ldap_test') }}</a>
+                                                <a class="btn btn-theme btn-sm" id="ldaptestlogin" style="margin-right: 10px;">{{ trans('admin/settings/general.ldap_test') }}</a>
                                             </div>
 
 
@@ -922,7 +922,7 @@
                                 <!-- LDAP test -->
                                 <div class="form-group">
                                     <div class="col-md-8 col-md-offset-3" id="ldaptestrow">
-                                        <a class="btn btn-default btn-sm" id="ldaptest" style="margin-right: 10px;">{{ trans('admin/settings/general.ldap_test_sync') }}</a>
+                                        <a class="btn btn-theme btn-sm" id="ldaptest" style="margin-right: 10px;">{{ trans('admin/settings/general.ldap_test_sync') }}</a>
                                         <p class="help-block">{{ trans('admin/settings/general.ldap_login_sync_help') }}</p>
                                     </div>
                                     <div class="col-md-12">
@@ -1137,11 +1137,11 @@
             html += '</ul>'
             html += '<div style="overflow:auto;">'
             html += '<div>{{ trans('admin/settings/message.ldap.sync_success') }}<br><br></div>'
-            html += '<div class="table-wrapper"><table class="table table-bordered table-condensed">'
+            html += '<table class="table table-striped snipe-table table-bordered table-condensed">'
             html += buildLdapResultsTableHeader()
             html += buildLdapResultsTableBody(results.user_sync.users)
             html += '</table></div>'
-            html += '</div>'
+            html += ''
             return html;
         }
 

@@ -358,6 +358,22 @@
             border-right-color: var(--box-bg) !important;
         }
 
+        .table-bordered > tbody > tr > td,
+        .table-bordered > tbody > tr > th,
+        .table-bordered > tfoot > tr > td,
+        .table-bordered > tfoot > tr > th,
+        .table-bordered > thead > tr > td,
+        .table-bordered > thead > tr > td,
+        .table-bordered > thead > tr > th,
+        .table-bordered > thead > tr > th,
+        .table-bordered,
+        .well
+        {
+            border: 1px solid var(--box-header-top-border-color) !important;
+            border-left-color: var(--box-header-top-border-color) !important;
+            border-right-color: var(--box-header-top-border-color) !important;
+        }
+
         .box {
             border-top: 3px solid;
         }
@@ -398,7 +414,8 @@
         .nav-tabs-custom > .nav-tabs > li.active > a:link,
         .nav-tabs-custom > .nav-tabs > li.active > a:visited,
         .nav-tabs-custom > .nav-tabs > li.active > a:hover,
-        .bootstrap-table.fullscreen
+        .bootstrap-table.fullscreen,
+        .well
         {
 
             color: var(--color-fg);
