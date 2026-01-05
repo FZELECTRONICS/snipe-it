@@ -286,8 +286,10 @@ trait Loggable
         ];
 
         if(Setting::getSettings()->webhook_selected === 'microsoft' && Str::contains(Setting::getSettings()->webhook_endpoint, 'workflows')) {
-            try {
+
                 $endpoint = Setting::getSettings()->webhook_endpoint;
+
+            try {
                 $message = AuditNotification::toMicrosoftTeams($params);
                 $notification = new TeamsNotification($endpoint);
 
