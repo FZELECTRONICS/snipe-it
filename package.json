@@ -58,5 +58,16 @@
         "signature_pad": "^4.2.0",
         "tableexport.jquery.plugin": "^1.33.0",
         "tether": "^1.4.0"
+    },
+    "overrides": {
+      "pbkdf2": {
+        "sha.js": ">=2.4.12"
+      },
+      "create-hmac": {
+        "sha.js": ">=2.4.12"
+      },
+      "create-hash": {
+        "sha.js": ">=2.4.12"
+      }
     }
 }
