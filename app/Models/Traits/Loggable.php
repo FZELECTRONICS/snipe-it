@@ -11,7 +11,6 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\AuditNotification;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
