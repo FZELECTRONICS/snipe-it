@@ -113,12 +113,15 @@ class UploadedFilesController extends Controller
                 $object->logUpload($file_name, $request->input('notes'));
             }
 
-            $files = Actionlog::select('action_logs.*')->where('action_type', '=', 'uploaded')
-                ->where('item_type', '=', self::$map_object_type[$object_type])
-                ->where('item_id', '=', $id)->whereIn('filename', $files)
-                ->get();
+            if ($files) {
+                $file_results = Actionlog::select('action_logs.*')->where('action_type', '=', 'uploaded')
+                    ->where('item_type', '=', self::$map_object_type[$object_type])
+                    ->where('item_id', '=', $id)->whereIn('filename', $files)
+                    ->get();
 
-            return response()->json(Helper::formatStandardApiResponse('success', (new UploadedFilesTransformer())->transformFiles($files, count($files)), trans_choice('general.file_upload_status.upload.success',  count($files))));
+                return response()->json(Helper::formatStandardApiResponse('success', (new UploadedFilesTransformer())->transformFiles($file_results, count($file_results)), trans_choice('general.file_upload_status.upload.success',  count($files))));
+            }
+
         }
 
         // No files were submitted
