@@ -120,7 +120,7 @@
                         <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
                                 <p class="form-control-static" style="padding-top: 7px;">
-                                    <a data-theme-toggle-clear class="btn btn-default btn-sm" onClick(return false;);>
+                                    <a data-theme-toggle-clear class="btn btn-theme" onClick(return false;);>
                                         {{ trans('admin/settings/general.color_reset') }}
                                     </a>
                                 </p>
