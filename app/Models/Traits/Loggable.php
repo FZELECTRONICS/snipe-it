@@ -292,7 +292,6 @@ trait Loggable
             try {
                 $message = AuditNotification::toMicrosoftTeams($params);
                 $notification = new TeamsNotification($endpoint);
-
                 $notification->success()->sendMessage($message[0], $message[1]);
 
             } catch (ConnectException $e) {
