@@ -229,8 +229,11 @@ class BulkUsersController extends Controller
 
         // Only sync groups if groups were selected
         if ($request->filled('groups')) {
+
             foreach ($users as $user) {
-                $user->groups()->sync($request->input('groups'));
+                if (auth()->user()->can('canEditAuthFields', $user) && auth()->user()->can('editableOnDemo')) {
+                    $user->groups()->sync($request->input('groups'));
+                }
             }
         }
 
