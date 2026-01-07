@@ -159,7 +159,6 @@
                                     :value="old('saml_idp_metadata', $setting->saml_idp_metadata)"
                                     placeholder="https://example.com/idp/metadata"
                                     wrap="off"
-                                    @disabled(config('app.lock_passwords'))
                                 />
                                 {!! $errors->first('saml_idp_metadata', '<span class="alert-msg" aria-hidden="true">:message</span>') !!}<br>
                                 <button type="button" class="btn btn-theme" id="saml_idp_metadata_upload_btn" {{ $setting->demoMode }}>{{ trans('button.select_file') }}</button>
