@@ -278,8 +278,6 @@
         }
 
 
-
-
         input[type="text"]:focus,
         input[type="url"]:focus,
         input[type="date"]:focus,
@@ -289,6 +287,15 @@
         textarea:focus
         {
             border-color: hsl(from var(--main-theme-color) h s calc(l - 5)) !important;
+        }
+
+        *:disabled,
+        input[readonly],
+        textarea[readonly]
+        {
+            background-color: light-dark(rgb(234, 232, 232), rgb(117, 116, 117)) !important;
+            border: 1px solid light-dark(rgb(234, 232, 232), rgb(117, 116, 117)) !important;
+            cursor: not-allowed !important;
         }
 
 
@@ -629,7 +636,6 @@
             color: var(--nav-primary-text-color) !important;
         }
 
-
         .navbar-nav > .notifications-menu > .dropdown-menu > li.header,
         .navbar-nav > .messages-menu > .dropdown-menu > li.header,
         .navbar-nav > .tasks-menu > .dropdown-menu > li.header,
@@ -744,23 +750,23 @@
         }
 
         .text-warning {
-            color: var(--text-warning);
+            color: var(--text-warning) !important;
         }
 
         .text-info {
-            color: var(--text-info);
+            color: var(--text-info) !important;
         }
 
         .text-primary {
-            color: var(--main-theme-color);
+            color: var(--main-theme-color) !important;
         }
 
         .text-danger {
-            color: var(--text-danger);
+            color: var(--text-danger) !important;
         }
 
         .text-success {
-            color: var(--text-success);
+            color: var(--text-success) !important;
         }
 
         .dropdown-menu > .divider {
@@ -781,12 +787,6 @@
         }
 
 
-        input[type="checkbox"],
-        input[type="radio"],
-        label.form-control
-        {
-            cursor: pointer !important;
-        }
 
 
         .callout.callout-legend {
