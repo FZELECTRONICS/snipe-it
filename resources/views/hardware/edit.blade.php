@@ -197,8 +197,6 @@
             </div> <!-- end order details -->
         </fieldset>
     </div><!-- end col-md-12 col-sm-12-->
-    </div><!-- end col-md-12 col-sm-12-->
-    </div><!-- end col-md-12 col-sm-12-->
    
 @stop
 
