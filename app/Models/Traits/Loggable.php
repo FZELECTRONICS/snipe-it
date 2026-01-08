@@ -11,14 +11,12 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\AuditNotification;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Osama\LaravelTeamsNotification\TeamsNotification;
-use Throwable;
 
 trait Loggable
 {
