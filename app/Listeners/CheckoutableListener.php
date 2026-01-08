@@ -39,7 +39,6 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Osama\LaravelTeamsNotification\TeamsNotification;
-use function Laravel\Prompts\error;
 
 class CheckoutableListener
 {
@@ -136,7 +135,7 @@ class CheckoutableListener
                     return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_channel_not_found'));
                 } else {
                     if ($status >= 500 || $status === null) {
-                        Log:error(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
+                        Log::error(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
                     } else {
                         Log::warning("ClientException caught during checkin notification: " . $e->getMessage());
                         return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_fail'));
@@ -239,7 +238,7 @@ class CheckoutableListener
                     return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_channel_not_found'));
                 } else {
                     if ($status >= 500 || $status === null) {
-                        Log:error(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
+                        Log::error(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
                     } else {
                         Log::warning("ClientException caught during checkin notification: " . $e->getMessage());
                         return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_fail'));
