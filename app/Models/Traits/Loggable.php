@@ -10,7 +10,10 @@ use App\Models\Location;
 use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\AuditNotification;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -287,23 +290,32 @@ trait Loggable
 
         if(Setting::getSettings()->webhook_selected === 'microsoft' && Str::contains(Setting::getSettings()->webhook_endpoint, 'workflows')) {
 
-                $endpoint = Setting::getSettings()->webhook_endpoint;
+            $endpoint = Setting::getSettings()->webhook_endpoint;
 
             try {
                 $message = AuditNotification::toMicrosoftTeams($params);
                 $notification = new TeamsNotification($endpoint);
                 $notification->success()->sendMessage($message[0], $message[1]);
 
-            } catch (ConnectException $e) {
-                Log::warning('Teams webhook connection failed', [
+            } catch (ServerException $e) {
+
+                Log::error('Teams webhook server error', [
                     'endpoint' => $endpoint,
+                    'status' => $e->getResponse()?->getStatusCode(),
                     'error' => $e->getMessage(),
                 ]);
 
-            } catch (Throwable $e) {
-                Log::error('Teams webhook failed unexpectedly', [
+            } catch (ClientException $e) {
+
+                Log::warning('Teams webhook client error', [
                     'endpoint' => $endpoint,
-                    'exception' => get_class($e),
+                    'status' => $e->getResponse()?->getStatusCode(),
+                    'error' => $e->getMessage(),
+                ]);
+            } catch (RequestException $e) {
+
+                Log::error('Teams webhook request failure', [
+                    'endpoint' => $endpoint,
                     'error' => $e->getMessage(),
                 ]);
             }
