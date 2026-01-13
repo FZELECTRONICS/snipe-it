@@ -242,7 +242,7 @@ return [
     'previous'				=> 'Previous',
     'previous_page'			=> 'Previous Page',
     'processing'			=> 'Processing',
-    'profile'				=> 'Your Profile',
+    'profile'				=> 'View Profile',
     'purchase_cost'                              => 'Purchase Cost',
     'purchase_date'         => 'Purchase Date',
     'qty'		            => 'QTY',
