@@ -57,8 +57,6 @@ class TZe_241 extends TZe_18mm
 
         $fields = $record->get('fields') ?? [];
 
-        $fieldCount = count($fields);
-
         $field_layout = Helper::labelFieldLayoutScaling(
             pdf: $pdf,
             fields: $fields,
