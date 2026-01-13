@@ -11,12 +11,14 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\AuditNotification;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Osama\LaravelTeamsNotification\TeamsNotification;
+use Throwable;
 
 trait Loggable
 {
@@ -295,6 +297,12 @@ trait Loggable
                 $notification = new TeamsNotification($endpoint);
                 $notification->success()->sendMessage($message[0], $message[1]);
 
+            } catch (ConnectException $e) {
+                Log::warning('Teams webhook connection failed', [
+                    'endpoint' => $endpoint,
+                    'error' => $e->getMessage()
+                ]);
+
             } catch (ServerException $e) {
 
                 Log::error('Teams webhook server error', [
@@ -314,6 +322,12 @@ trait Loggable
 
                 Log::error('Teams webhook request failure', [
                     'endpoint' => $endpoint,
+                    'error' => $e->getMessage(),
+                ]);
+            }catch (Throwable $e) {
+                Log::error('Teams webhook failed unexpectedly', [
+                    'endpoint' => $endpoint,
+                    'exception' => get_class($e),
                     'error' => $e->getMessage(),
                 ]);
             }
