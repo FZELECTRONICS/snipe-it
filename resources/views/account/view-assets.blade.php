@@ -449,55 +449,59 @@
                       <th class="col-md-1">
                         #
                       </th>
-                      <th class="col-md-1">
+                      <th>
                         {{ trans('general.image') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="true">
+                      <th data-switchable="true" data-visible="true">
                         {{ trans('general.category') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="true">
+                      <th data-switchable="true" data-visible="true">
                         {{ trans('admin/hardware/table.asset_tag') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="false">
+                      <th data-switchable="true" data-visible="false">
                         {{ trans('general.name') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="false">
+                      <th data-switchable="true" data-visible="false">
                         {{ trans('general.status') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="true">
+                      <th data-switchable="true" data-visible="true">
                         {{ trans('admin/hardware/table.asset_model') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="false">
+                      <th data-switchable="true" data-visible="false">
                         {{ trans('general.model_no') }}
                       </th>
-                      <th class="col-md-3" data-switchable="true" data-visible="true">
+                      <th data-switchable="true" data-visible="true">
                         {{ trans('admin/hardware/table.serial') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="false">
+                      <th data-switchable="true" data-visible="false">
                         {{ trans('admin/hardware/form.default_location') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="false">
+                      <th data-switchable="true" data-visible="false">
                         {{ trans('general.location') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="true">
+                      <th  data-switchable="true" data-visible="true">
                         {{ trans('admin/hardware/form.expected_checkin') }}
                       </th>
                       @can('self.view_purchase_cost')
-                        <th class="col-md-6" data-footer-formatter="sumFormatter" data-fieldname="purchase_cost">
+                        <th data-footer-formatter="sumFormatter" data-fieldname="purchase_cost">
                           {{ trans('general.purchase_cost') }}
                         </th>
                       @endcan
-                      <th class="col-md-2" data-switchable="true" data-visible="true">
+                      <th data-switchable="true" data-visible="true">
                         {{ trans('admin/hardware/form.eol_date') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="false">
+                      <th data-switchable="true" data-visible="false">
                         {{ trans('general.last_audit') }}
                       </th>
-                      <th class="col-md-2" data-switchable="true" data-visible="false">
+                      <th data-switchable="true" data-visible="false">
                         {{ trans('general.next_audit_date') }}
                       </th>
+                    <th data-switchable="true" data-visible="false" data-formatter="trueFalseFormatter">
+                        {{ trans('general.byod') }}
+                    </th>
+
                       @foreach ($field_array as $db_column => $field_name)
-                        <th class="col-md-1" data-switchable="true" data-visible="true">{{ $field_name }}</th>
+                        <th data-switchable="true" data-visible="true">{{ $field_name }}</th>
                       @endforeach
 
                     </tr>
@@ -568,6 +572,10 @@
                         <td>
                           {{ Helper::getFormattedDateObject($asset->next_audit_date, 'date', false) }}
                         </td>
+
+                          <td>
+                              {{ $asset->byod }}
+                          </td>
 
                         @foreach ($field_array as $db_column => $field_value)
                           <td>
