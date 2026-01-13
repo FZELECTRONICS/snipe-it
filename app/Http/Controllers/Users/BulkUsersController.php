@@ -169,6 +169,7 @@ class BulkUsersController extends Controller
             ->conditionallyAddItem('remote')
             ->conditionallyAddItem('ldap_import')
             ->conditionallyAddItem('activated')
+            ->conditionallyAddItem('display_name')
             ->conditionallyAddItem('start_date')
             ->conditionallyAddItem('end_date')
             ->conditionallyAddItem('city')
@@ -212,6 +213,10 @@ class BulkUsersController extends Controller
 
         if ($request->input('null_locale')=='1') {
             $this->update_array['locale'] = null;
+        }
+
+        if ($request->input('null_display_name')=='1') {
+            $this->update_array['display_name'] = null;
         }
 
         if (! $manager_conflict) {
