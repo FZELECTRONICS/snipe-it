@@ -16,7 +16,7 @@
 @section('content')
 
 <div class="row">
-  <div class="col-md-12">
+    <div class="col-md-8 col-md-offset-2">
     @if ($snipeSettings->ldap_enabled == 0)
       {{ trans('admin/users/message.ldap_not_configured') }}
     @else
@@ -26,19 +26,18 @@
         <div class="box-body">
 
                 <div class="callout callout-legend col-md-12">
-
                     <p>
                         <i class="fa-solid fa-lightbulb"></i>
                         <strong>{!!  trans('admin/users/general.ldap_sync_intro', ['link' => 'https://snipe-it.readme.io/docs/ldap-sync#/']) !!}</strong>
                     </p>
                 </div>
          
-          <!-- location_id-->
-          <div class="form-group {{ $errors->has('location_id') ? 'has-error' : '' }}">
-               <!-- Location -->
-              @include ('partials.forms.edit.location-select', ['translated_name' => trans('general.ldap_sync_location'), 'help_text' => trans('admin/users/general.ldap_config_text'), 'fieldname' => 'location_id[]', 'multiple' => true])
-          </div>
-
+              <!-- location_id-->
+              <div class="form-group {{ $errors->has('location_id') ? 'has-error' : '' }}">
+                   <!-- Location -->
+                  @include ('partials.forms.edit.location-select', ['translated_name' => trans('general.ldap_sync_location'), 'help_text' => trans('admin/users/general.ldap_config_text'), 'fieldname' => 'location_id[]', 'multiple' => true])
+              </div>
+            </div><!-- ./box-body -->
             <div class="box-footer">
                 <div class="text-left col-md-6">
                     <a class="btn btn-link" href="{{ route('users.index') }}">{{ trans('button.cancel') }}</a>
@@ -48,10 +47,8 @@
                         <i id="sync-button-icon" class="fas fa-sync-alt icon-white" aria-hidden="true"></i> <span id="sync-button-text">{{ trans('general.synchronize') }}</span>
                     </button>
                 </div>
+            </div> <!-- ./box-footer -->
 
-            </div>
-
-        </div>
       </div>
     </form>
   </div>
@@ -62,30 +59,52 @@
 
 @if (Session::get('summary'))
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8 col-md-offset-2">
 
     <div class="box box-default">
       <div class="box-header with-border">
         <h2 class="box-title">{{ trans('general.sync_results') }}</h2>
       </div><!-- /.box-header -->
       <div class="box-body">
-        <table class="table table-bordered">
+          <table
+                  data-cookie-id-table="ldapUserSync"
+                  data-id-table="ldapUserSyncTable"
+                  data-side-pagination="client"
+                  data-sort-order="asc"
+                  data-sort-name="username"
+                  data-show-refresh="false"
+                  id="customFieldsTable"
+                  data-advanced-search="false"
+                  class="table table-striped snipe-table"
+                  data-export-options='{
+                "fileName": "ldap-sync-results-{{ date('Y-m-d') }}"
+                }'>
+              <thead>
           <tr>
-              <th>{{ trans('general.username') }}</th><th>{{ trans('general.employee_number') }}</th>
-              <th>{{ trans('general.first_name') }}</th><th>{{ trans('general.last_name') }}</th>
-              <th>{{ trans('general.email') }}</th><th>{{ trans('general.notes') }}</th>
+              <th data-sortable="true" data-visible="false" data-searchable="true">{{ trans('general.id') }}</th>
+              <th data-sortable="true" data-visible="true" data-searchable="true">{{ trans('general.username') }}</th>
+              <th data-sortable="true" data-visible="true" data-searchable="true">{{ trans('admin/users/table.display_name') }}</th>
+              <th data-sortable="true" data-visible="true" data-searchable="true">{{ trans('general.employee_number') }}</th>
+              <th data-sortable="true" data-visible="true" data-searchable="true">{{ trans('general.first_name') }}</th>
+              <th data-sortable="true" data-visible="true" data-searchable="true">{{ trans('general.last_name') }}</th>
+              <th data-sortable="true" data-visible="true" data-searchable="true">{{ trans('general.email') }}</th>
+              <th data-sortable="true" data-visible="true" data-searchable="true">{{ trans('general.notes') }}</th>
           </tr>
+              </thead>
+              <tbody>
 
           @foreach (Session::get('summary') as $entry)
-          <tr {!! ($entry['status']=='success') ? 'class="success"' : 'class="danger"' !!}>
+          <tr>
+              <td>{{ $entry['id'] }}</td>
               <td>{{ $entry['username'] }}</td>
+              <td>{{ $entry['display_name'] }}</td>
               <td>{{ $entry['employee_number'] }}</td>
               <td>{{ $entry['firstname'] }}</td>
               <td>{{ $entry['lastname'] }}</td>
               <td>{{ $entry['email'] }}</td>
               <td>
                 @if ($entry['status']=='success')
-                  <i class="fas fa-check"></i> {!! $entry['note'] !!}
+                  <span class="text-success"><i class="fas fa-check"></i> {!! $entry['note'] !!}</span>
                 @else
                   <span class="alert-msg" aria-hidden="true">{!! $entry['note'] !!}</span>
                 @endif
@@ -93,6 +112,7 @@
                 </td>
               </tr>
           @endforeach
+              </tbody>
         </table>
       </div>
     </div>
@@ -106,7 +126,9 @@
 
 @section('moar_scripts')
 
-<script type="text/javascript">
+ @include ('partials.bootstrap-table')
+
+    <script type="text/javascript">
     $(document).ready(function () {
         $("#sync").click(function () {
             $("#sync").removeClass("btn-warning");
