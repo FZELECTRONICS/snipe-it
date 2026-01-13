@@ -13,6 +13,7 @@ use App\Models\Setting;
 use App\Models\Statuslabel;
 use App\Models\License;
 use App\Models\Location;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -1734,5 +1735,62 @@ class Helper
             }
         }
         return $mismatched;
+    }
+    static public function labelFieldLayoutScaling(
+        $pdf,
+        iterable|\Closure $fields,
+        float $currentX,
+        float $usableWidth,
+        float $usableHeight,
+        float $baseLabelSize,
+        float $baseFieldSize,
+        float $baseFieldMargin,
+        float $baseLabelPadding = 1.5,
+        float $baseGap          = 1.5,
+        float $maxScale         = 1.8,
+        string $labelFont       = 'freesans',
+    )  : array
+    {
+        $fieldCount = count($fields);
+        $perFieldHeight = max($baseLabelSize, $baseFieldSize) + $baseFieldMargin;
+        $baseHeight = $fieldCount * $perFieldHeight;
+        $scale = 1.0;
+        if ($baseHeight > 0 && $usableHeight > 0) {
+            $scale = $usableHeight / $baseHeight;
+        }
+
+        $scale = min($scale, $maxScale);
+
+        $labelSize = $baseLabelSize * $scale;
+        $fieldSize = $baseFieldSize * $scale;
+        $fieldMargin = $baseFieldMargin * $scale;
+
+        $rowAdvance = max($labelSize, $fieldSize) + $fieldMargin;
+        $pdf->SetFont($labelFont, '', $baseLabelSize);
+
+        $maxLabelWidthPerUnit = 0;
+        foreach ($fields as $field) {
+            $label = rtrim($field['label'], ':') . ':';
+            $width = $pdf->GetStringWidth($label);
+            $maxLabelWidthPerUnit = max($maxLabelWidthPerUnit, $width / $baseLabelSize);
+        }
+
+        $labelPadding = $baseLabelPadding * $scale;
+        $gap = $baseGap * $scale;
+
+        $labelWidth = ($maxLabelWidthPerUnit * $labelSize) + $labelPadding;
+        $valueX = $currentX + $labelWidth + $gap;
+        $valueWidth = $usableWidth - $labelWidth - $gap;
+
+        return compact(
+            'scale',
+            'labelSize',
+            'fieldSize',
+            'fieldMargin',
+            'rowAdvance',
+            'labelWidth',
+            'valueX',
+            'valueWidth'
+        );
     }
 }
