@@ -437,10 +437,8 @@
 
                            <!-- Manager View -->
                            <div class="form-group {{ $errors->has('manager_view_enabled') ? 'error' : '' }}">
-                               <div class="col-md-3">
-                                   <strong>{{ trans('admin/settings/general.manager_view') }}</strong>
-                               </div>
-                               <div class="col-md-8">
+
+                               <div class="col-md-8 col-md-offset-3">
                                    <label class="form-control">
                                        <input type="checkbox" value="1" name="manager_view_enabled" {{ (old('manager_view_enabled', $setting->manager_view_enabled)) == '1' ? ' checked="checked"' : '' }} aria-label="manager_view_enabled">
                                        {{ trans('admin/settings/general.manager_view_enabled_text') }}
