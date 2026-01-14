@@ -14,6 +14,7 @@
 {{-- Page content --}}
 @section('content')
 
+
     <style>
         .checkbox label {
             padding-right: 40px;
@@ -25,13 +26,26 @@
         }
 
         /*
-           Don't make the password field *look* readonly - this is for usability, so admins don't think they can't edit this field.
-         */
-        .form-control[readonly] {
-            background-color: white;
-            color: #555555;
-            cursor:text;
+          Don't make the password field *look* readonly - this is for usability, so admins don't think they can't edit this field.
+        */
+        
+        input[type='text'][disabled],
+        input[disabled],
+        textarea[disabled],
+        input[readonly],
+        textarea[readonly],
+        .form-control[disabled],
+        .form-control[readonly],
+        fieldset[disabled]
+        {
+            cursor:text !important;
+            background-color: var(--table-stripe-bg) !important;
+            color: var(--color-fg) !important;
         }
+        input:required, select:required {
+            border-right: 5px solid orange !important;
+        }
+
 
         .table-wrapper {
             overflow-x: auto;
