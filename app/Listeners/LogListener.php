@@ -73,6 +73,8 @@ class LogListener
         $logaction->action_type = 'accepted';
         $logaction->action_date = $event->acceptance->accepted_at;
         $logaction->quantity = $event->acceptance->qty ?? 1;
+        $logaction->created_by = auth()->user()->id;
+
 
         // TODO: log the actual license seat that was checked out
         if ($event->acceptance->checkoutable instanceof LicenseSeat) {
@@ -92,6 +94,7 @@ class LogListener
         $logaction->action_type = 'declined';
         $logaction->action_date = $event->acceptance->declined_at;
         $logaction->quantity = $event->acceptance->qty ?? 1;
+        $logaction->created_by = auth()->user()->id;
 
         // TODO: log the actual license seat that was checked out
         if ($event->acceptance->checkoutable instanceof LicenseSeat) {
