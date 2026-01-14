@@ -17,7 +17,7 @@ class PurgeEulaPDFs extends Command
     protected $signature = 'snipeit:purge-eula-pdfs  
                             {--older-than-days= : The number of days we should delete before } 
                             {--force : Skip the interactive yes/no prompt for confirmation}
-                            {--dryrun : Run the purge process but don\'t update the database or delete files}
+                            {--dryrun : Show the records that would be deleted but don\'t update the database or delete files from disk}
                             {--with-output : Display the results in a table in your console}';
 
     /**
