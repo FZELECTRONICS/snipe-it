@@ -85,7 +85,7 @@ class CheckoutAcceptance extends Model
     /**
      * The user that the checkoutable was checked out to
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function assignedTo()
     {
@@ -184,6 +184,10 @@ class CheckoutAcceptance extends Model
         return Attribute:: make(
             get: fn(mixed $value) => strtolower(str_replace('App\Models\\', '', $this->checkoutable_type)),
         );
+    }
+
+    protected function scopeHasFiles(Builder $query) {
+        return $query->whereNotNull('signature_filename')->orWhereNotNull('stored_eula_file');
     }
 
     public function generateAcceptancePdf($data, $pdf_filename) {
