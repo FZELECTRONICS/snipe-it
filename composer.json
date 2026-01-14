@@ -29,7 +29,7 @@
     "ext-mbstring": "*",
     "ext-pdo": "*",
     "alek13/slack": "^2.0",
-    "arietimmerman/laravel-scim-server": "dev-laravel_11_compatibility",
+    "arietimmerman/laravel-scim-server": "dev-master",
     "bacon/bacon-qr-code": "^2.0",
     "barryvdh/laravel-debugbar": "^3.13",
     "doctrine/cache": "^1.10",

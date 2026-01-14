@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "553ce69c21704905c568769de08fffe4",
+    "content-hash": "b1dfc90a20cecf851224ea8a5c71f26d",
     "packages": [
         {
             "name": "alek13/slack",
@@ -74,16 +74,16 @@
         },
         {
             "name": "arietimmerman/laravel-scim-server",
-            "version": "dev-laravel_11_compatibility",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grokability/laravel-scim-server.git",
-                "reference": "6c771799090bfe04dcee94a1dc9f82870aed4dbe"
+                "reference": "ad77044af7c36291b69dc1a7dbfa86ba82362554"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grokability/laravel-scim-server/zipball/6c771799090bfe04dcee94a1dc9f82870aed4dbe",
-                "reference": "6c771799090bfe04dcee94a1dc9f82870aed4dbe",
+                "url": "https://api.github.com/repos/grokability/laravel-scim-server/zipball/ad77044af7c36291b69dc1a7dbfa86ba82362554",
+                "reference": "ad77044af7c36291b69dc1a7dbfa86ba82362554",
                 "shasum": ""
             },
             "require": {
@@ -98,6 +98,7 @@
                 "laravel/legacy-factories": "*",
                 "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -130,9 +131,9 @@
             ],
             "description": "Laravel Package for creating a SCIM server",
             "support": {
-                "source": "https://github.com/grokability/laravel-scim-server/tree/laravel_11_compatibility"
+                "source": "https://github.com/grokability/laravel-scim-server/tree/master"
             },
-            "time": "2025-01-20T14:49:28+00:00"
+            "time": "2026-01-14T14:30:06+00:00"
         },
         {
             "name": "aws/aws-crt-php",
