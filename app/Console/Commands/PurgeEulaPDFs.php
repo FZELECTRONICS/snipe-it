@@ -59,7 +59,7 @@ class PurgeEulaPDFs extends Command
         $acceptances = CheckoutAcceptance::HasFiles()->where('updated_at','<', $interval_date)->with('assignedTo')->get();
 
         if (!$this->option('force')) {
-            if ($this->confirm("\n****************************************************\nTHIS WILL DELETE ALL OF THE SIGNATURES AND EULA PDF FILES SINCE '.$interval_date.'. \nThere is NO undo! \n****************************************************\n\nDo you wish to continue? No backsies! [y|N]")) {
+            if ($this->confirm("\n****************************************************\nTHIS WILL DELETE ALL OF THE SIGNATURES AND EULA PDF FILES SINCE $interval_date. \nThere is NO undo! \n****************************************************\n\nDo you wish to continue? No backsies! [y|N]")) {
             }
         }
 
