@@ -1761,7 +1761,7 @@ class Helper
 
         $scale = min($scale, $maxScale);
 
-        $labelSize = $baseLabelSize * $scale;
+        $labelSize = $baseLabelSize;
         $fieldSize = $baseFieldSize * $scale;
         $fieldMargin = $baseFieldMargin * $scale;
 
