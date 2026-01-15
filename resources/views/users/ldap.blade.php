@@ -95,7 +95,7 @@
 
           @foreach (Session::get('summary') as $entry)
           <tr>
-              <td>{{ $entry['id'] }}</td>
+              <td>{{ (array_key_exists('id', $entry)) ?  $entry['id'] : '' }}</td>
               <td>{{ $entry['username'] }}</td>
               <td>{{ $entry['display_name'] }}</td>
               <td>{{ $entry['employee_number'] }}</td>
