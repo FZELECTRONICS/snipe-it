@@ -340,6 +340,8 @@
         .modal-danger,
         .modal-danger h2,
         .modal-warning h2,
+        .modal-danger h4,
+        .modal-warning h4,
         .bg-maroon,
         .bg-maroon:hover,
         .bg-maroon:focus,
@@ -349,6 +351,7 @@
         {
             color: white !important;
         }
+
 
         .btn-selected,
         .btn-selected a,
@@ -1291,7 +1294,7 @@
                             </li>
                         @endcan
                         @can('index', \App\Models\Asset::class)
-                            <li class="treeview{{ ((request()->is('statuslabels/*') || request()->is('hardware*')) ? ' active' : '') }}">
+                            <li class="treeview{{ ((request()->is('statuslabels/*') || request()->is(['hardware*', 'maintenances*'])) ? ' active' : '') }}">
                                 <a href="#">
                                     <x-icon type="assets" class="fa-fw" />
                                     <span>{{ trans('general.assets') }}</span>
@@ -1411,7 +1414,7 @@
                                     @endcan
 
                                     @can('create', \App\Models\Asset::class)
-                                        <li{!! (Request::query('Deleted') ? ' class="active"' : '') !!}>
+                                        <li{!! (request()->query('status') == 'Deleted' ? ' class="active"' : '') !!}>
                                             <a href="{{ url('hardware?status=Deleted') }}">
                                                 {{ trans('general.deleted') }}
                                             </a>
@@ -1538,7 +1541,7 @@
                         @endcan
 
                         @can('backend.interact')
-                            <li id="settings-sidenav-option" class="treeview {!! in_array(Request::route()->getName(),App\Helpers\Helper::SettingUrls()) ? ' active': '' !!}">
+                            <li id="settings-sidenav-option" class="treeview {!! (request()->is(App\Helpers\Helper::SettingUrls()) ? ' active' : '') !!}">
                                 <a href="#" id="settings">
                                     <x-icon type="settings" class="fa-fw" />
                                     <span>{{ trans('general.settings') }}</span>
@@ -1563,7 +1566,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\AssetModel::class)
-                                        <li {{!! (request()->is('models') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('models*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('models.index') }}">
                                                 {{ trans('general.asset_models') }}
                                             </a>
@@ -1571,7 +1574,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Category::class)
-                                        <li {{!! (request()->is('categories') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('categories*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('categories.index') }}">
                                                 {{ trans('general.categories') }}
                                             </a>
@@ -1579,7 +1582,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Manufacturer::class)
-                                        <li {{!! (request()->is('manufacturers') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('manufacturers*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('manufacturers.index') }}">
                                                 {{ trans('general.manufacturers') }}
                                             </a>
@@ -1587,7 +1590,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Supplier::class)
-                                        <li {{!! (request()->is('suppliers') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('suppliers*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('suppliers.index') }}">
                                                 {{ trans('general.suppliers') }}
                                             </a>
@@ -1595,7 +1598,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Department::class)
-                                        <li {{!! (request()->is('departments') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('departments*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('departments.index') }}">
                                                 {{ trans('general.departments') }}
                                             </a>
@@ -1603,7 +1606,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Location::class)
-                                        <li {{!! (request()->is('locations') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('locations*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('locations.index') }}">
                                                 {{ trans('general.locations') }}
                                             </a>
@@ -1611,7 +1614,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Company::class)
-                                        <li {{!! (request()->is('companies') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('companies*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('companies.index') }}">
                                                 {{ trans('general.companies') }}
                                             </a>
@@ -1619,7 +1622,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Depreciation::class)
-                                        <li  {{!! (request()->is('depreciations') ? ' class="active"' : '') !!}}>
+                                        <li  {{!! (request()->is('depreciations*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('depreciations.index') }}">
                                                 {{ trans('general.depreciation') }}
                                             </a>
