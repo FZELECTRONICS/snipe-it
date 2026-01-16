@@ -42,7 +42,6 @@
               "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
               }'>
               </table>
-
       </div><!-- /.box-body -->
     </div><!-- /.box -->
   </div>
