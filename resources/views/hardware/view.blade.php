@@ -415,7 +415,7 @@
                                     </div>
                                 @endif
                                 @if (($snipeSettings->qr_code=='1') || $snipeSettings->label2_2d_type!='none')
-                                    <div class="col-md-12 text-center" style="padding-top: 15px;">
+                                    <div class="col-md-12 text-center asset-qr-img" style="padding-top: 15px;">
                                         <img src="{{ config('app.url') }}/hardware/{{ $asset->id }}/qr_code" class="img-thumbnail" style="height: 150px; width: 150px; margin-right: 10px;" alt="QR code for {{ $asset->getDisplayNameAttribute() }}">
                                     </div>
                                 @endif
