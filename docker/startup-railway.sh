@@ -1,16 +1,25 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-# Run PHP-FPM in the background
+# Wait for services to be ready
+sleep 2
+
+# Start PHP-FPM in the background
 echo "Starting PHP-FPM..."
-php-fpm &
+/usr/local/sbin/php-fpm &
 PHP_FPM_PID=$!
 
-# Run Supervisord in the background for cron jobs
+# Wait for PHP-FPM to start
+sleep 2
+
+# Start Supervisord in the background for cron jobs
 echo "Starting Supervisord..."
-supervisord -c /etc/supervisord.conf &
+/usr/bin/supervisord -c /etc/supervisord.conf &
 SUPERVISOR_PID=$!
+
+# Wait for supervisord to start
+sleep 2
 
 # Start Nginx in foreground to keep container running
 echo "Starting Nginx..."
-exec nginx -g "daemon off;"
+exec /usr/sbin/nginx -g "daemon off;"

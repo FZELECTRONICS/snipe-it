@@ -1,7 +1,7 @@
 FROM php:8.4-fpm-alpine
 
 # Install system dependencies
-RUN apk add --no-cache \
+RUN apk add --no-cache --update \
     curl \
     git \
     zip \
@@ -11,7 +11,8 @@ RUN apk add --no-cache \
     nginx \
     supervisor \
     dcron \
-    bash
+    bash \
+    && which php-fpm && which nginx && which supervisord
 
 # Install PHP extensions
 RUN docker-php-ext-install \
