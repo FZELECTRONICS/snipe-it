@@ -64,6 +64,10 @@ COPY php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 # Copy supervisor configuration for cron jobs
 COPY supervisord.conf /etc/supervisord.conf
 
+# Copy startup script
+COPY docker/startup-railway.sh /startup-railway.sh
+RUN chmod +x /startup-railway.sh
+
 # Generate Laravel app key if not set
 RUN if [ -z "$APP_KEY" ]; then php artisan key:generate --no-interaction --force; fi
 
@@ -74,5 +78,5 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=5 \
     CMD curl -f http://localhost/api/v2/about || exit 1
 
-# Start PHP-FPM, Nginx, and Supervisord (for cron jobs)
-CMD ["sh", "-c", "php-fpm & supervisord -c /etc/supervisord.conf & nginx -g 'daemon off;'"]
+# Start services via startup script
+CMD ["/startup-railway.sh"]
