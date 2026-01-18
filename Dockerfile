@@ -122,10 +122,6 @@ USER root
 #RUN chmod +x /tmp/app_install.exp
 #RUN /tmp/app_install.exp
 
-############### DATA VOLUME #################
-
-VOLUME ["/var/lib/snipeit"]
-
 ##### START SERVER
 
 COPY docker/startup.sh docker/supervisord.conf /
