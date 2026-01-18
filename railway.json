@@ -2,10 +2,10 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "dockerfile",
-    "dockerfile": "Dockerfile.railway"
+    "dockerfile": "Dockerfile"
   },
   "deploy": {
     "numReplicas": 1,
-    "startCommand": "sh -c 'php-fpm & supervisord -c /etc/supervisord.conf & nginx -g \"daemon off;\"'"
+    "startCommand": "/startup.sh"
   }
 }
