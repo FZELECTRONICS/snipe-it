@@ -1,0 +1,78 @@
+FROM php:8.4-fpm-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    curl \
+    git \
+    zip \
+    unzip \
+    mysql-client \
+    postgresql-client \
+    nginx \
+    supervisor \
+    dcron \
+    bash
+
+# Install PHP extensions
+RUN docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    pdo_pgsql \
+    bcmath \
+    ctype \
+    fileinfo \
+    json \
+    mbstring \
+    openssl \
+    tokenizer \
+    xml \
+    intl \
+    gd
+
+# Install composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy application source
+COPY . .
+
+# Install PHP dependencies
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+# Install Node dependencies and build assets
+RUN apk add --no-cache nodejs npm && \
+    npm ci && \
+    npm run build && \
+    npm cache clean --force
+
+# Create required directories
+RUN mkdir -p storage/logs \
+    storage/uploads \
+    bootstrap/cache \
+    storage/backups && \
+    chown -R www-data:www-data /var/www/html && \
+    chmod -R 775 storage bootstrap/cache
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy PHP-FPM configuration
+COPY php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Copy supervisor configuration for cron jobs
+COPY supervisord.conf /etc/supervisord.conf
+
+# Generate Laravel app key if not set
+RUN if [ -z "$APP_KEY" ]; then php artisan key:generate --no-interaction --force; fi
+
+# Expose port
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=5 \
+    CMD curl -f http://localhost/api/v2/about || exit 1
+
+# Start PHP-FPM, Nginx, and Supervisord (for cron jobs)
+CMD ["sh", "-c", "php-fpm & supervisord -c /etc/supervisord.conf & nginx -g 'daemon off;'"]
