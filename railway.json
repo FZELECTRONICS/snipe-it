@@ -6,8 +6,6 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "restartPolicyMaxRetries": 3,
-    "restartPolicyType": "on-failure",
     "startCommand": "sh -c 'php-fpm & supervisord -c /etc/supervisord.conf & nginx -g \"daemon off;\"'"
   }
 }
