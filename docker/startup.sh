@@ -83,13 +83,41 @@ export DB_CONNECTION=pgsql
 # Disable SSL for PostgreSQL connection - Railway doesn't require it
 export DB_SSLMODE=disable
 
-# CRITICAL: Write database settings directly to .env file
+# CRITICAL: Write ALL database settings directly to .env file
 # Laravel reads from .env file, not shell exports
 echo "Updating .env file with database configuration..."
+
+# Update connection type and SSL setting
 sed -i "s/^DB_CONNECTION=.*/DB_CONNECTION=pgsql/" /var/www/html/.env
 sed -i "s/^DB_SSLMODE=.*/DB_SSLMODE=disable/" /var/www/html/.env
-echo "  DB_CONNECTION=$(grep '^DB_CONNECTION=' /var/www/html/.env || echo 'NOT SET')"
-echo "  DB_SSLMODE=$(grep '^DB_SSLMODE=' /var/www/html/.env || echo 'NOT SET')"
+
+# Also update database credentials from environment variables if provided
+if [ -n "$DB_HOST" ]; then
+  sed -i "s/^DB_HOST=.*/DB_HOST=${DB_HOST}/" /var/www/html/.env || echo "DB_HOST=" >> /var/www/html/.env
+fi
+if [ -n "$DB_PORT" ]; then
+  sed -i "s/^DB_PORT=.*/DB_PORT=${DB_PORT}/" /var/www/html/.env || echo "DB_PORT=" >> /var/www/html/.env
+fi
+if [ -n "$DB_DATABASE" ]; then
+  sed -i "s/^DB_DATABASE=.*/DB_DATABASE=${DB_DATABASE}/" /var/www/html/.env || echo "DB_DATABASE=" >> /var/www/html/.env
+fi
+if [ -n "$DB_USERNAME" ]; then
+  sed -i "s/^DB_USERNAME=.*/DB_USERNAME=${DB_USERNAME}/" /var/www/html/.env || echo "DB_USERNAME=" >> /var/www/html/.env
+fi
+if [ -n "$DB_PASSWORD" ]; then
+  sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD}/" /var/www/html/.env || echo "DB_PASSWORD=" >> /var/www/html/.env
+fi
+
+# IMPORTANT: Verify all changes took effect
+echo "=== Database Configuration in .env ==="
+echo "Current DB_CONNECTION: $(grep '^DB_CONNECTION=' /var/www/html/.env || echo 'NOT SET')"
+echo "Current DB_HOST: $(grep '^DB_HOST=' /var/www/html/.env || echo 'NOT SET')"
+echo "Current DB_PORT: $(grep '^DB_PORT=' /var/www/html/.env || echo 'NOT SET')"
+echo "Current DB_DATABASE: $(grep '^DB_DATABASE=' /var/www/html/.env || echo 'NOT SET')"
+echo "Current DB_USERNAME: $(grep '^DB_USERNAME=' /var/www/html/.env || echo 'NOT SET')"
+echo "Current DB_PASSWORD: $(grep '^DB_PASSWORD=' /var/www/html/.env | sed 's/=.*/=***/' || echo 'NOT SET')"
+echo "Current DB_SSLMODE: $(grep '^DB_SSLMODE=' /var/www/html/.env || echo 'NOT SET')"
+echo "========================================"
 
 echo "Database Connection Type: pgsql (PostgreSQL)"
 echo "Database SSL Mode: disabled"
