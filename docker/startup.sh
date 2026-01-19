@@ -82,6 +82,15 @@ fi
 export DB_CONNECTION=pgsql
 # Disable SSL for PostgreSQL connection - Railway doesn't require it
 export DB_SSLMODE=disable
+
+# CRITICAL: Write database settings directly to .env file
+# Laravel reads from .env file, not shell exports
+echo "Updating .env file with database configuration..."
+sed -i "s/^DB_CONNECTION=.*/DB_CONNECTION=pgsql/" /var/www/html/.env
+sed -i "s/^DB_SSLMODE=.*/DB_SSLMODE=disable/" /var/www/html/.env
+echo "  DB_CONNECTION=$(grep '^DB_CONNECTION=' /var/www/html/.env || echo 'NOT SET')"
+echo "  DB_SSLMODE=$(grep '^DB_SSLMODE=' /var/www/html/.env || echo 'NOT SET')"
+
 echo "Database Connection Type: pgsql (PostgreSQL)"
 echo "Database SSL Mode: disabled"
 
