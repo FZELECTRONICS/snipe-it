@@ -86,7 +86,9 @@ WORKDIR /var/www/html
 
 #copy all configuration files
 # COPY docker/*.php /var/www/html/app/config/production/
-COPY docker/docker.env /var/www/html/.env
+# Use .env.railway if available (Railway deployment), otherwise use docker.env
+COPY .env.railway /var/www/html/.env.railway.template
+RUN if [ -f /var/www/html/.env.railway.template ]; then cp /var/www/html/.env.railway.template /var/www/html/.env; else cp docker/docker.env /var/www/html/.env; fi
 
 RUN chown -R docker /var/www/html
 
