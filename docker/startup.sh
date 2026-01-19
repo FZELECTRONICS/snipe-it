@@ -85,6 +85,14 @@ export DB_SSL_VERIFY_SERVER=false
 export DB_CONNECTION=pgsql
 export DISABLE_DB_SSL=true
 
+# CRITICAL: If Railway set DATABASE_URL, remove SSL requirement from it
+if [ -n "$DATABASE_URL" ]; then
+  echo "Detected DATABASE_URL from Railway, removing SSL requirement..."
+  # Remove sslmode=require and add sslmode=disable
+  export DATABASE_URL="${DATABASE_URL//sslmode=require/sslmode=disable}"
+  echo "Updated DATABASE_URL: $(echo $DATABASE_URL | sed 's/:.*@/:***@/')"
+fi
+
 # CRITICAL: Write ALL database settings directly to .env file
 # Laravel reads from .env file, not shell exports
 echo "Updating .env file with database configuration..."
