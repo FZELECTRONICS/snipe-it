@@ -1,0 +1,60 @@
+# ==============================================
+# RAILWAY VARIABLES - RAW EDITOR FORMAT
+# ==============================================
+# Copy and paste this into Railway → Variables → Raw Editor
+# Then update the values marked with [CHANGE_ME] or [GET_FROM_POSTGRES]
+# ==============================================
+
+# ============ DATABASE - POSTGRESQL ============
+DB_CONNECTION=pgsql
+DB_HOST=postgres.railway.internal
+DB_PORT=5432
+DB_DATABASE=railway
+DB_USERNAME=postgres
+DB_PASSWORD=[GET_FROM_POSTGRES_SERVICE]
+DB_SSLMODE=disable
+DB_SSL=false
+DB_SSL_VERIFY_SERVER=false
+DB_PREFIX=null
+DB_DUMP_PATH=/usr/bin
+DB_DUMP_SKIP_SSL=false
+
+# ============ APPLICATION ============
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=base64:tu9NRh/a6+dCXBDGvg0Gv/0TcABnFsbT4AKxrr8mwQo=
+APP_URL=https://[YOUR_RAILWAY_DOMAIN].up.railway.app
+APP_TIMEZONE=UTC
+APP_LOCALE=en
+
+# ============ FILES & STORAGE ============
+PRIVATE_FILESYSTEM_DISK=local
+PUBLIC_FILESYSTEM_DISK=local_public
+
+# ============ PAGINATION ============
+MAX_RESULTS=500
+
+# ============ DATABASE SSL SETTINGS (PostgreSQL doesn't use these, but keeping for safety) ============
+DB_SSL_KEY_PATH=null
+DB_SSL_CERT_PATH=null
+DB_SSL_CA_PATH=null
+DB_SSL_CIPHER=null
+
+# ============ OPTIONAL - UNCOMMENT IF NEEDED ============
+# MAIL_MAILER=smtp
+# MAIL_HOST=[YOUR_MAIL_HOST]
+# MAIL_PORT=587
+# MAIL_USERNAME=[YOUR_MAIL_USER]
+# MAIL_PASSWORD=[YOUR_MAIL_PASSWORD]
+# MAIL_FROM_ADDR=noreply@example.com
+# MAIL_FROM_NAME=Snipe-IT
+# MAIL_ENCRYPTION=tls
+
+# REDIS_HOST=[IF_USING_REDIS]
+# REDIS_PORT=6379
+# REDIS_PASSWORD=[IF_NEEDED]
+# CACHE_DRIVER=redis
+# SESSION_DRIVER=redis
+
+# LOG_CHANNEL=single
+# LOG_LEVEL=debug

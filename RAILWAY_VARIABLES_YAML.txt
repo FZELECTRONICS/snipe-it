@@ -1,0 +1,40 @@
+# ==============================================
+# RAILWAY VARIABLES - YAML FORMAT
+# ==============================================
+# If Railway's Raw Editor requires YAML format, use this instead
+# ==============================================
+
+# ============ DATABASE - POSTGRESQL ============
+DB_CONNECTION: pgsql
+DB_HOST: postgres.railway.internal
+DB_PORT: "5432"
+DB_DATABASE: railway
+DB_USERNAME: postgres
+DB_PASSWORD: [GET_FROM_POSTGRES_SERVICE]
+DB_SSLMODE: disable
+DB_SSL: "false"
+DB_SSL_VERIFY_SERVER: "false"
+DB_PREFIX: "null"
+DB_DUMP_PATH: /usr/bin
+DB_DUMP_SKIP_SSL: "false"
+
+# ============ APPLICATION ============
+APP_ENV: production
+APP_DEBUG: "false"
+APP_KEY: base64:tu9NRh/a6+dCXBDGvg0Gv/0TcABnFsbT4AKxrr8mwQo=
+APP_URL: https://[YOUR_RAILWAY_DOMAIN].up.railway.app
+APP_TIMEZONE: UTC
+APP_LOCALE: en
+
+# ============ FILES & STORAGE ============
+PRIVATE_FILESYSTEM_DISK: local
+PUBLIC_FILESYSTEM_DISK: local_public
+
+# ============ PAGINATION ============
+MAX_RESULTS: "500"
+
+# ============ DATABASE SSL SETTINGS ============
+DB_SSL_KEY_PATH: "null"
+DB_SSL_CERT_PATH: "null"
+DB_SSL_CA_PATH: "null"
+DB_SSL_CIPHER: "null"
