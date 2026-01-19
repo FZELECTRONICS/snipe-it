@@ -6,6 +6,16 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "startCommand": "/startup.sh"
+    "startCommand": "/startup.sh",
+    "healthchecks": {
+      "readiness": {
+        "httpGet": {
+          "path": "/",
+          "port": 80
+        },
+        "initialDelaySeconds": 30,
+        "periodSeconds": 10
+      }
+    }
   }
 }
