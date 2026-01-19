@@ -77,6 +77,11 @@ then
   exit 1
 fi
 
+# CRITICAL: Override DB_CONNECTION for Railway PostgreSQL
+# Railway provides PostgreSQL, not MySQL
+export DB_CONNECTION=pgsql
+echo "Database Connection Type: pgsql (PostgreSQL)"
+
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then
   a2enmod ssl
