@@ -92,6 +92,8 @@ then
   export APP_URL="http://localhost"
 fi
 
+echo "APP_URL is set to: $APP_URL"
+
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then
   a2enmod ssl
@@ -172,6 +174,12 @@ php artisan migrate --force 2>&1 || {
 echo "Clearing and caching config..."
 php artisan config:clear
 php artisan config:cache
+
+echo "Clearing and caching routes..."
+php artisan route:cache
+
+echo "Optimizing app..."
+php artisan optimize
 
 # we do this after the artisan commands to ensure that if the laravel
 # log got created by root, we set the permissions back
