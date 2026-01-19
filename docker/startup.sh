@@ -97,9 +97,14 @@ fi
 
 echo "APP_URL is set to: $APP_URL"
 
-# CRITICAL: Set PORT for Railway - Railway sets APP_PORT to 8000 by default
-export PORT=${PORT:-8000}
+# CRITICAL: Set PORT for Railway - Railway sets PORT dynamically
+export PORT=${PORT:-8080}
 echo "PORT is set to: $PORT"
+
+# Dynamically configure Apache to listen on the correct PORT
+# sed replaces any port number with the current PORT value
+sed -i "s/<VirtualHost \*:[0-9]*>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
+sed -i "s/Listen [0-9]*/Listen ${PORT}/" /etc/apache2/ports.conf
 
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then
@@ -230,7 +235,7 @@ echo "Apache processes running: $APACHE_PROCS"
 echo ""
 echo "=========================================="
 echo "✓ Snipe-IT is ready!"
-echo "✓ Apache is running on port 80"
+echo "✓ Apache is running on port $PORT"
 echo "✓ Database connected to PostgreSQL"
 echo "✓ Laravel configured and optimized"
 echo "=========================================="

@@ -132,5 +132,5 @@ RUN chmod +x /startup.sh /usr/bin/supervisor-exit-event-listener
 
 CMD ["/startup.sh"]
 
-EXPOSE 8000
+EXPOSE 8080
 EXPOSE 443
