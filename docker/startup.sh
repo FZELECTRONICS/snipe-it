@@ -82,6 +82,16 @@ fi
 export DB_CONNECTION=pgsql
 echo "Database Connection Type: pgsql (PostgreSQL)"
 
+# Verify APP_URL is set
+if [ -z "$APP_URL" ]
+then
+  echo "WARNING: APP_URL environment variable is not set!"
+  echo "Snipe-IT requires APP_URL to match your Railway domain"
+  echo "Set it in Railway Dashboard → Variables"
+  echo "Example APP_URL: https://your-app-production.railway.app"
+  export APP_URL="http://localhost"
+fi
+
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then
   a2enmod ssl
