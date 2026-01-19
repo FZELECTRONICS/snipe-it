@@ -130,4 +130,8 @@ php artisan config:cache
 touch /var/www/html/storage/logs/laravel.log
 chown -R docker:root /var/www/html/storage/logs/laravel.log
 
+# Properly restart Apache after configuration
+service apache2 restart || service apache2 start
+
+# Start supervisord which will keep the container alive
 exec supervisord -c /supervisord.conf
