@@ -77,43 +77,37 @@ then
   exit 1
 fi
 
-# CRITICAL: Disable ALL SSL-related settings for PostgreSQL
-# Railway's internal PostgreSQL doesn't support SSL from the app container
-export DB_SSLMODE=disable
-export DB_SSL=false
+# CRITICAL: Configure PostgreSQL SSL handling
+# Railway's internal PostgreSQL: use sslmode=allow (try SSL, fall back to non-SSL)
+# This is safer than disable for Railway's environment
+export DB_SSLMODE=allow
+export DB_SSL=true
 export DB_SSL_VERIFY_SERVER=false
 export DB_CONNECTION=pgsql
-export DISABLE_DB_SSL=true
+export DISABLE_DB_SSL=false
 
-# CRITICAL: Construct DATABASE_URL without SSL for internal connection
-# If Railway set DATABASE_URL with template variables, we need to override it
+# CRITICAL: Construct DATABASE_URL for internal connection with sslmode=allow
+# Allow SSL but don't verify certificates for internal Railway connection
 if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ] && [ -n "$DB_USERNAME" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_DATABASE" ]; then
-  echo "Constructing DATABASE_URL without SSL for internal PostgreSQL connection..."
-  # Build URL with sslmode=disable explicitly set
-  export DATABASE_URL="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=disable"
-  echo "Set DATABASE_URL (password masked): postgresql://***:***@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=disable"
-fi
-
-# CRITICAL: If old DATABASE_URL exists from Railway, remove SSL requirement from it
-if [ -n "$DATABASE_URL" ] && [[ "$DATABASE_URL" == *"sslmode=require"* ]]; then
-  echo "Removing SSL requirement from existing DATABASE_URL..."
-  export DATABASE_URL="${DATABASE_URL//sslmode=require/sslmode=disable}"
+  echo "Constructing DATABASE_URL with SSL allowed (no verification) for Railway..."
+  # Use sslmode=allow: try SSL, fall back to non-SSL if it fails
+  export DATABASE_URL="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=allow"
+  echo "Set DATABASE_URL (password masked): postgresql://***:***@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=allow"
 fi
 
 # CRITICAL: Write ALL database settings directly to .env file
 # Laravel reads from .env file, not shell exports
 echo "Updating .env file with database configuration..."
 
-# Update connection type and ALL SSL settings to disable
+# Update connection type and SSL settings for sslmode=allow
 sed -i "s/^DB_CONNECTION=.*/DB_CONNECTION=pgsql/" /var/www/html/.env
-sed -i "s/^DB_SSLMODE=.*/DB_SSLMODE=disable/" /var/www/html/.env
-sed -i "s/^DB_SSL=.*/DB_SSL=false/" /var/www/html/.env
+sed -i "s/^DB_SSLMODE=.*/DB_SSLMODE=allow/" /var/www/html/.env
+sed -i "s/^DB_SSL=.*/DB_SSL=true/" /var/www/html/.env
 sed -i "s/^DB_SSL_VERIFY_SERVER=.*/DB_SSL_VERIFY_SERVER=false/" /var/www/html/.env
-sed -i "s/^DISABLE_DB_SSL=.*/DISABLE_DB_SSL=true/" /var/www/html/.env
 
 # If settings don't exist, append them (fallback)
-grep -q "^DB_SSLMODE=" /var/www/html/.env || echo "DB_SSLMODE=disable" >> /var/www/html/.env
-grep -q "^DB_SSL=" /var/www/html/.env || echo "DB_SSL=false" >> /var/www/html/.env
+grep -q "^DB_SSLMODE=" /var/www/html/.env || echo "DB_SSLMODE=allow" >> /var/www/html/.env
+grep -q "^DB_SSL=" /var/www/html/.env || echo "DB_SSL=true" >> /var/www/html/.env
 
 # Also update database credentials from environment variables if provided
 if [ -n "$DB_HOST" ]; then
