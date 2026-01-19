@@ -47,8 +47,26 @@ then
   echo "Please re-run this container with an environment variable \$APP_KEY"
   echo "An example APP_KEY you could use is: "
   /var/www/html/artisan key:generate --show
-  exit
+  exit 1
 fi
+
+# Check database connectivity
+if [ -z "$DB_HOST" ]
+then
+  echo "ERROR: DB_HOST environment variable is not set!"
+  echo "Please set database variables in Railway Dashboard:"
+  echo "  - DB_HOST"
+  echo "  - DB_PORT"
+  echo "  - DB_DATABASE"
+  echo "  - DB_USERNAME"
+  echo "  - DB_PASSWORD"
+  exit 1
+fi
+
+echo "Database Host: $DB_HOST"
+echo "Database Port: $DB_PORT"
+echo "Database Name: $DB_DATABASE"
+echo "Database User: $DB_USERNAME"
 
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then
