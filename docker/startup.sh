@@ -80,7 +80,10 @@ fi
 # CRITICAL: Override DB_CONNECTION for Railway PostgreSQL
 # Railway provides PostgreSQL, not MySQL
 export DB_CONNECTION=pgsql
+# Disable SSL for PostgreSQL connection - Railway doesn't require it
+export DB_SSLMODE=disable
 echo "Database Connection Type: pgsql (PostgreSQL)"
+echo "Database SSL Mode: disabled"
 
 # Verify APP_URL is set
 if [ -z "$APP_URL" ]
