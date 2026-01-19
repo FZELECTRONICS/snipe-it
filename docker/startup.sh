@@ -67,6 +67,15 @@ echo "Database Host: $DB_HOST"
 echo "Database Port: $DB_PORT"
 echo "Database Name: $DB_DATABASE"
 echo "Database User: $DB_USERNAME"
+echo "Database Password: $([ -z "$DB_PASSWORD" ] && echo 'NOT SET!' || echo 'SET')"
+
+# Verify database password is set
+if [ -z "$DB_PASSWORD" ]
+then
+  echo "ERROR: DB_PASSWORD environment variable is not set!"
+  echo "This must be set in Railway Dashboard under Variables"
+  exit 1
+fi
 
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then
@@ -139,7 +148,13 @@ then
   cp -ax /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Console/stubs/database.stub /var/www/html/database/migrations/2021_05_06_0000_create_sessions_table.php
 fi
 
-php artisan migrate --force
+echo "Running database migrations..."
+php artisan migrate --force 2>&1 || {
+  echo "ERROR: Database migration failed!"
+  exit 1
+}
+
+echo "Clearing and caching config..."
 php artisan config:clear
 php artisan config:cache
 
@@ -148,8 +163,12 @@ php artisan config:cache
 touch /var/www/html/storage/logs/laravel.log
 chown -R docker:root /var/www/html/storage/logs/laravel.log
 
-# Properly restart Apache after configuration
-service apache2 restart || service apache2 start
+echo "Starting Apache..."
+service apache2 restart || service apache2 start || {
+  echo "ERROR: Apache failed to start!"
+  exit 1
+}
 
+echo "Starting supervisord..."
 # Start supervisord which will keep the container alive
 exec supervisord -c /supervisord.conf
