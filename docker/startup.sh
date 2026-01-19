@@ -196,11 +196,15 @@ echo "Starting Apache..."
 if ! pgrep -x "apache2" > /dev/null
 then
   echo "Apache not running, starting..."
-  service apache2 start || {
-    echo "WARNING: Apache failed to start!"
+  service apache2 start 2>&1 || {
+    echo "ERROR: Apache failed to start!"
+    echo "Checking Apache configuration..."
+    apache2ctl -t 2>&1 || true
+    echo "Checking Apache error log..."
+    tail -50 /var/log/apache2/error.log 2>/dev/null || echo "Could not read error log"
   }
 else
-  echo "Apache is already running"
+  echo "Apache is already running (PID: $(pgrep apache2))"
 fi
 
 # Wait a moment for Apache to stabilize
@@ -208,11 +212,14 @@ sleep 2
 
 # Verify Apache is listening on port 80
 echo "Checking if Apache is listening on port 80..."
-if netstat -tuln 2>/dev/null | grep -q ":80 "; then
+if netstat -tuln 2>/dev/null | grep -q ":80 " || ss -tuln 2>/dev/null | grep -q ":80 "; then
   echo "✓ Apache is listening on port 80"
 else
-  echo "WARNING: Apache not listening on port 80"
-  ss -tuln 2>/dev/null | grep -i listen || echo "Could not verify listening ports"
+  echo "ERROR: Apache not listening on port 80!"
+  echo "Running 'apache2ctl status':"
+  apache2ctl status 2>&1 || true
+  echo "Apache processes:"
+  ps aux | grep -i apache | grep -v grep || echo "No Apache processes found"
 fi
 
 echo "Starting supervisord..."
