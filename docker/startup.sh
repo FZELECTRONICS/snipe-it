@@ -85,12 +85,19 @@ export DB_SSL_VERIFY_SERVER=false
 export DB_CONNECTION=pgsql
 export DISABLE_DB_SSL=true
 
-# CRITICAL: If Railway set DATABASE_URL, remove SSL requirement from it
-if [ -n "$DATABASE_URL" ]; then
-  echo "Detected DATABASE_URL from Railway, removing SSL requirement..."
-  # Remove sslmode=require and add sslmode=disable
+# CRITICAL: Construct DATABASE_URL without SSL for internal connection
+# If Railway set DATABASE_URL with template variables, we need to override it
+if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ] && [ -n "$DB_USERNAME" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_DATABASE" ]; then
+  echo "Constructing DATABASE_URL without SSL for internal PostgreSQL connection..."
+  # Build URL with sslmode=disable explicitly set
+  export DATABASE_URL="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=disable"
+  echo "Set DATABASE_URL (password masked): postgresql://***:***@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=disable"
+fi
+
+# CRITICAL: If old DATABASE_URL exists from Railway, remove SSL requirement from it
+if [ -n "$DATABASE_URL" ] && [[ "$DATABASE_URL" == *"sslmode=require"* ]]; then
+  echo "Removing SSL requirement from existing DATABASE_URL..."
   export DATABASE_URL="${DATABASE_URL//sslmode=require/sslmode=disable}"
-  echo "Updated DATABASE_URL: $(echo $DATABASE_URL | sed 's/:.*@/:***@/')"
 fi
 
 # CRITICAL: Write ALL database settings directly to .env file
