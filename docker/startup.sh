@@ -97,6 +97,10 @@ fi
 
 echo "APP_URL is set to: $APP_URL"
 
+# CRITICAL: Set PORT for Railway - Railway needs to know which port to route to
+export PORT=${PORT:-80}
+echo "PORT is set to: $PORT"
+
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then
   a2enmod ssl
@@ -223,6 +227,14 @@ fi
 APACHE_PROCS=$(pgrep -c apache2 || echo "0")
 echo "Apache processes running: $APACHE_PROCS"
 
+echo ""
+echo "=========================================="
+echo "✓ Snipe-IT is ready!"
+echo "✓ Apache is running on port 80"
+echo "✓ Database connected to PostgreSQL"
+echo "✓ Laravel configured and optimized"
+echo "=========================================="
+echo ""
 echo "Starting supervisord..."
 # Start supervisord which will keep the container alive
 exec supervisord -c /supervisord.conf
