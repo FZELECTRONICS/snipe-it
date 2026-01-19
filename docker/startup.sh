@@ -103,8 +103,15 @@ echo "PORT is set to: $PORT"
 
 # Dynamically configure Apache to listen on the correct PORT
 # sed replaces any port number with the current PORT value
+echo "Configuring Apache to listen on port $PORT..."
 sed -i "s/<VirtualHost \*:[0-9]*>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
 sed -i "s/Listen [0-9]*/Listen ${PORT}/" /etc/apache2/ports.conf
+
+# Verify the changes were made
+echo "Apache VirtualHost configuration:"
+grep -m1 "VirtualHost" /etc/apache2/sites-available/000-default.conf || echo "  (no VirtualHost found)"
+echo "Apache Listen configuration:"
+grep "^Listen" /etc/apache2/ports.conf || echo "  (no Listen directive found)"
 
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
 then

@@ -126,6 +126,8 @@ USER root
 
 ##### START SERVER
 
+# Copy Apache and other configurations
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY docker/startup.sh docker/supervisord.conf /
 COPY docker/supervisor-exit-event-listener /usr/bin/supervisor-exit-event-listener
 RUN chmod +x /startup.sh /usr/bin/supervisor-exit-event-listener
