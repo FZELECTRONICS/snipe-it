@@ -97,8 +97,8 @@ fi
 
 echo "APP_URL is set to: $APP_URL"
 
-# CRITICAL: Set PORT for Railway - Railway needs to know which port to route to
-export PORT=${PORT:-80}
+# CRITICAL: Set PORT for Railway - Railway sets APP_PORT to 8000 by default
+export PORT=${PORT:-8000}
 echo "PORT is set to: $PORT"
 
 if [ -f /var/lib/snipeit/ssl/snipeit-ssl.crt -a -f /var/lib/snipeit/ssl/snipeit-ssl.key ]
@@ -215,12 +215,12 @@ fi
 sleep 2
 
 # Verify Apache is listening by making a test request
-echo "Testing Apache HTTP response..."
-RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80/ 2>/dev/null || echo "000")
+echo "Testing Apache HTTP response on port $PORT..."
+RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:$PORT/ 2>/dev/null || echo "000")
 if [ "$RESPONSE" != "000" ]; then
-  echo "✓ Apache is responding (HTTP $RESPONSE)"
+  echo "✓ Apache is responding on port $PORT (HTTP $RESPONSE)"
 else
-  echo "WARNING: Could not reach Apache on localhost:80"
+  echo "WARNING: Could not reach Apache on localhost:$PORT"
 fi
 
 # Check if Apache processes are running
