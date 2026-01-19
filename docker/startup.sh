@@ -203,6 +203,18 @@ else
   echo "Apache is already running"
 fi
 
+# Wait a moment for Apache to stabilize
+sleep 2
+
+# Verify Apache is listening on port 80
+echo "Checking if Apache is listening on port 80..."
+if netstat -tuln 2>/dev/null | grep -q ":80 "; then
+  echo "✓ Apache is listening on port 80"
+else
+  echo "WARNING: Apache not listening on port 80"
+  ss -tuln 2>/dev/null | grep -i listen || echo "Could not verify listening ports"
+fi
+
 echo "Starting supervisord..."
 # Start supervisord which will keep the container alive
 exec supervisord -c /supervisord.conf
