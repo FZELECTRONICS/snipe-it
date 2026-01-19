@@ -231,6 +231,11 @@ echo "Testing Apache HTTP response on port $PORT..."
 RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:$PORT/ 2>/dev/null || echo "000")
 if [ "$RESPONSE" != "000" ]; then
   echo "✓ Apache is responding on port $PORT (HTTP $RESPONSE)"
+  if [ "$RESPONSE" = "302" ] || [ "$RESPONSE" = "301" ]; then
+    echo "  Redirect detected - checking target..."
+    REDIRECT=$(curl -s -i http://localhost:$PORT/ 2>/dev/null | grep -i "Location:" || echo "  (no location header)")
+    echo "  $REDIRECT"
+  fi
 else
   echo "WARNING: Could not reach Apache on localhost:$PORT"
 fi
