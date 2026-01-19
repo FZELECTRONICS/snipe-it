@@ -210,17 +210,18 @@ fi
 # Wait a moment for Apache to stabilize
 sleep 2
 
-# Verify Apache is listening on port 80
-echo "Checking if Apache is listening on port 80..."
-if netstat -tuln 2>/dev/null | grep -q ":80 " || ss -tuln 2>/dev/null | grep -q ":80 "; then
-  echo "✓ Apache is listening on port 80"
+# Verify Apache is listening by making a test request
+echo "Testing Apache HTTP response..."
+RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80/ 2>/dev/null || echo "000")
+if [ "$RESPONSE" != "000" ]; then
+  echo "✓ Apache is responding (HTTP $RESPONSE)"
 else
-  echo "ERROR: Apache not listening on port 80!"
-  echo "Running 'apache2ctl status':"
-  apache2ctl status 2>&1 || true
-  echo "Apache processes:"
-  ps aux | grep -i apache | grep -v grep || echo "No Apache processes found"
+  echo "WARNING: Could not reach Apache on localhost:80"
 fi
+
+# Check if Apache processes are running
+APACHE_PROCS=$(pgrep -c apache2 || echo "0")
+echo "Apache processes running: $APACHE_PROCS"
 
 echo "Starting supervisord..."
 # Start supervisord which will keep the container alive
