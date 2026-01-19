@@ -169,10 +169,18 @@ touch /var/www/html/storage/logs/laravel.log
 chown -R docker:root /var/www/html/storage/logs/laravel.log
 
 echo "Starting Apache..."
-service apache2 restart || service apache2 start || {
-  echo "ERROR: Apache failed to start!"
-  exit 1
-}
+# Don't restart Apache - it's already running from Dockerfile
+# Just ensure it stays running via supervisord
+# Only start if not running
+if ! pgrep -x "apache2" > /dev/null
+then
+  echo "Apache not running, starting..."
+  service apache2 start || {
+    echo "WARNING: Apache failed to start!"
+  }
+else
+  echo "Apache is already running"
+fi
 
 echo "Starting supervisord..."
 # Start supervisord which will keep the container alive
