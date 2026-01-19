@@ -77,50 +77,65 @@ then
   exit 1
 fi
 
-# CRITICAL: Override DB_CONNECTION for Railway PostgreSQL
-# Railway provides PostgreSQL, not MySQL
-export DB_CONNECTION=pgsql
-# Disable SSL for PostgreSQL connection - Railway doesn't require it
+# CRITICAL: Disable ALL SSL-related settings for PostgreSQL
+# Railway's internal PostgreSQL doesn't support SSL from the app container
 export DB_SSLMODE=disable
+export DB_SSL=false
+export DB_SSL_VERIFY_SERVER=false
+export DB_CONNECTION=pgsql
+export DISABLE_DB_SSL=true
 
 # CRITICAL: Write ALL database settings directly to .env file
 # Laravel reads from .env file, not shell exports
 echo "Updating .env file with database configuration..."
 
-# Update connection type and SSL setting
+# Update connection type and ALL SSL settings to disable
 sed -i "s/^DB_CONNECTION=.*/DB_CONNECTION=pgsql/" /var/www/html/.env
 sed -i "s/^DB_SSLMODE=.*/DB_SSLMODE=disable/" /var/www/html/.env
+sed -i "s/^DB_SSL=.*/DB_SSL=false/" /var/www/html/.env
+sed -i "s/^DB_SSL_VERIFY_SERVER=.*/DB_SSL_VERIFY_SERVER=false/" /var/www/html/.env
+sed -i "s/^DISABLE_DB_SSL=.*/DISABLE_DB_SSL=true/" /var/www/html/.env
+
+# If settings don't exist, append them (fallback)
+grep -q "^DB_SSLMODE=" /var/www/html/.env || echo "DB_SSLMODE=disable" >> /var/www/html/.env
+grep -q "^DB_SSL=" /var/www/html/.env || echo "DB_SSL=false" >> /var/www/html/.env
 
 # Also update database credentials from environment variables if provided
 if [ -n "$DB_HOST" ]; then
-  sed -i "s/^DB_HOST=.*/DB_HOST=${DB_HOST}/" /var/www/html/.env || echo "DB_HOST=" >> /var/www/html/.env
+  sed -i "s/^DB_HOST=.*/DB_HOST=${DB_HOST}/" /var/www/html/.env
+  grep -q "^DB_HOST=" /var/www/html/.env || echo "DB_HOST=${DB_HOST}" >> /var/www/html/.env
 fi
 if [ -n "$DB_PORT" ]; then
-  sed -i "s/^DB_PORT=.*/DB_PORT=${DB_PORT}/" /var/www/html/.env || echo "DB_PORT=" >> /var/www/html/.env
+  sed -i "s/^DB_PORT=.*/DB_PORT=${DB_PORT}/" /var/www/html/.env
+  grep -q "^DB_PORT=" /var/www/html/.env || echo "DB_PORT=${DB_PORT}" >> /var/www/html/.env
 fi
 if [ -n "$DB_DATABASE" ]; then
-  sed -i "s/^DB_DATABASE=.*/DB_DATABASE=${DB_DATABASE}/" /var/www/html/.env || echo "DB_DATABASE=" >> /var/www/html/.env
+  sed -i "s/^DB_DATABASE=.*/DB_DATABASE=${DB_DATABASE}/" /var/www/html/.env
+  grep -q "^DB_DATABASE=" /var/www/html/.env || echo "DB_DATABASE=${DB_DATABASE}" >> /var/www/html/.env
 fi
 if [ -n "$DB_USERNAME" ]; then
-  sed -i "s/^DB_USERNAME=.*/DB_USERNAME=${DB_USERNAME}/" /var/www/html/.env || echo "DB_USERNAME=" >> /var/www/html/.env
+  sed -i "s/^DB_USERNAME=.*/DB_USERNAME=${DB_USERNAME}/" /var/www/html/.env
+  grep -q "^DB_USERNAME=" /var/www/html/.env || echo "DB_USERNAME=${DB_USERNAME}" >> /var/www/html/.env
 fi
 if [ -n "$DB_PASSWORD" ]; then
-  sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD}/" /var/www/html/.env || echo "DB_PASSWORD=" >> /var/www/html/.env
+  sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD}/" /var/www/html/.env
+  grep -q "^DB_PASSWORD=" /var/www/html/.env || echo "DB_PASSWORD=${DB_PASSWORD}" >> /var/www/html/.env
 fi
 
 # IMPORTANT: Verify all changes took effect
 echo "=== Database Configuration in .env ==="
-echo "Current DB_CONNECTION: $(grep '^DB_CONNECTION=' /var/www/html/.env || echo 'NOT SET')"
-echo "Current DB_HOST: $(grep '^DB_HOST=' /var/www/html/.env || echo 'NOT SET')"
-echo "Current DB_PORT: $(grep '^DB_PORT=' /var/www/html/.env || echo 'NOT SET')"
-echo "Current DB_DATABASE: $(grep '^DB_DATABASE=' /var/www/html/.env || echo 'NOT SET')"
-echo "Current DB_USERNAME: $(grep '^DB_USERNAME=' /var/www/html/.env || echo 'NOT SET')"
-echo "Current DB_PASSWORD: $(grep '^DB_PASSWORD=' /var/www/html/.env | sed 's/=.*/=***/' || echo 'NOT SET')"
-echo "Current DB_SSLMODE: $(grep '^DB_SSLMODE=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_CONNECTION=$(grep '^DB_CONNECTION=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_HOST=$(grep '^DB_HOST=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_PORT=$(grep '^DB_PORT=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_DATABASE=$(grep '^DB_DATABASE=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_USERNAME=$(grep '^DB_USERNAME=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_PASSWORD=$(grep '^DB_PASSWORD=' /var/www/html/.env | sed 's/=.*/=***MASKED***/' || echo 'NOT SET')"
+echo "DB_SSLMODE=$(grep '^DB_SSLMODE=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_SSL=$(grep '^DB_SSL=' /var/www/html/.env || echo 'NOT SET')"
+echo "DB_SSL_VERIFY_SERVER=$(grep '^DB_SSL_VERIFY_SERVER=' /var/www/html/.env || echo 'NOT SET')"
 echo "========================================"
 
-echo "Database Connection Type: pgsql (PostgreSQL)"
-echo "Database SSL Mode: disabled"
+echo "Database Connection: PostgreSQL with SSL disabled"
 
 # Verify APP_URL is set
 if [ -z "$APP_URL" ]
